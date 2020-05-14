@@ -1,0 +1,6 @@
+(library
+ (name sink)
+ (public_name sink)
+ (preprocess
+  (pps ppx_typeclass))
+ (libraries sink.typeclasses))

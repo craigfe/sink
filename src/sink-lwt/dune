@@ -1,0 +1,4 @@
+(library
+ (name sink_lwt)
+ (public_name sink-lwt)
+ (libraries lwt))
