@@ -8,20 +8,19 @@ module Attributes = struct
   let infix =
     Attribute.declare "infix" Attribute.Context.Value_description
       Ast_pattern.(pstr __')
-      (fun s ->
-        match s with
+      (function
         | {
-         txt =
-           [
-             {
-               pstr_desc =
-                 Pstr_eval
-                   ({ pexp_desc = Pexp_ident { txt = Lident l; _ }; _ }, _);
-               _;
-             };
-           ];
-         _;
-        } ->
+            txt =
+              [
+                {
+                  pstr_desc =
+                    Pstr_eval
+                      ({ pexp_desc = Pexp_ident { txt = Lident l; _ }; _ }, _);
+                  _;
+                };
+              ];
+            _;
+          } ->
             l
         | { txt = [] | [ _ ] | _ :: _ :: _; loc } ->
             Location.raise_errorf ~loc

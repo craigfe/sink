@@ -5,7 +5,7 @@ module type S = sig
 end
 [@@deriving typeclass]
 
-module type S2 = sig
+module type S1 = sig
   type 'a t
 
   val to_string : 'a t -> string
@@ -18,7 +18,7 @@ end
 module type Show = sig
   module type S = S
 
-  module type S2 = S2
+  module type S1 = S1
 
   module type INFIX = INFIX
 end

@@ -9,6 +9,8 @@ module type S = sig
 end
 [@@deriving typeclass, infix]
 
+module type S1 = S
+
 (** Equal to [S] but with a second irrelevant type parameter. *)
 module type S2 = sig
   type ('a, 'e) t
@@ -103,6 +105,8 @@ module type Monad = sig
       - {b associativity}. [((m >>= f) >>= g) ≡ (m >>= (f >=> g))]. *)
 
   module type S = S
+
+  module type S1 = S1
 
   module type S2 = S2
 

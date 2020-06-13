@@ -5,6 +5,8 @@ module type S = sig
 end
 [@@deriving typeclass]
 
+module type S1 = S
+
 module type INFIX = sig
   type 'a t
 

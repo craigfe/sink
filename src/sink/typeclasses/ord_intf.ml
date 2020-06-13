@@ -16,7 +16,7 @@ module type S = sig
   val min : t -> t -> t
 end
 
-module type S2 = sig
+module type S1 = sig
   type 'a t
 
   val compare : ('a -> 'a -> Ordering.t) -> 'a t -> 'a t -> Ordering.t
@@ -49,7 +49,7 @@ module type Ord = sig
 
   module type S = S
 
-  module type S2 = S2
+  module type S1 = S1
 
   module type INFIX = INFIX
 

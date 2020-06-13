@@ -10,3 +10,5 @@ module type S = sig
   val seq : 'a t -> 'b t -> 'b t [@@infix ( *> )]
 end
 [@@deriving typeclass, infix]
+
+module type S1 = S

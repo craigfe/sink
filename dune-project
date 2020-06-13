@@ -27,6 +27,12 @@
 ;; PPXes used in the implementation of Sink
 
 (package
+ (name ppx_implements)
+ (synopsis "Helper for composing interfaces supported by a type")
+ (description "Helper for composing interfaces supported by a type")
+ (documentation https://CraigFe.github.io/sink/))
+
+(package
  (name ppx_deriving_typeclass)
  (synopsis "Derive first-class equivalents of module types")
  (description "Derive first-class equivalends of type signatures")

@@ -2,5 +2,5 @@
  (name sink)
  (public_name sink)
  (preprocess
-  (pps ppx_deriving_typeclass))
+  (pps ppx_deriving_typeclass ppx_implements))
  (libraries sink.typeclasses))

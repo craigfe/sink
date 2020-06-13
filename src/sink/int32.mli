@@ -1,10 +1,6 @@
 open Import
 
-type t = int32
-
-include Show.S with type t := t
-
-include Num.S with type t := t
+type t = int32 [@@implements Show.S, Num.S]
 
 module Infix : sig
   include Num.INFIX with type t := t
