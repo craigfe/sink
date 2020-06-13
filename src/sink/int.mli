@@ -1,6 +1,7 @@
 open Import
 
-type t = int [@@implements Show.S, Eq.S, Ord.S, Num.S, Bounded.S]
+type t = int
+[@@implements Show.S, Eq.S, Ord.S, Num.S, Bounded.S, Higher.BRANDED]
 
 module Infix : sig
   include Show.INFIX with type t := t

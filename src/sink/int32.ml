@@ -1,7 +1,7 @@
 open Import
 module I = Stdlib.Int32
 
-type t = int32
+type t = int32 [@@deriving branded]
 
 let to_string = I.to_string
 

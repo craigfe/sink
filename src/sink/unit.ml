@@ -1,6 +1,6 @@
 open Import
 
-type t = unit
+type t = unit [@@deriving branded]
 
 let to_string () = "()"
 

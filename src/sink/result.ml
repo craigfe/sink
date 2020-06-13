@@ -1,4 +1,6 @@
-type ('a, 'e) t = ('a, 'e) result
+open Import
+
+type ('a, 'e) t = ('a, 'e) result [@@deriving branded]
 
 let map f = function Ok o -> Ok (f o) | Error _ as e -> e
 

@@ -1,7 +1,7 @@
 open Import
 module O = Stdlib.Option
 
-type 'a t = 'a option
+type 'a t = 'a option [@@deriving branded]
 
 let none = None
 

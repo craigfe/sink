@@ -31,6 +31,14 @@ let implements =
       match payload.txt with
       | [
        {
+         pstr_desc =
+           Pstr_eval ({ pexp_desc = Pexp_construct (interface, None); _ }, _);
+         _;
+       };
+      ] ->
+          [ interface.txt ]
+      | [
+       {
          pstr_desc = Pstr_eval ({ pexp_desc = Pexp_tuple interfaces; _ }, _);
          _;
        };

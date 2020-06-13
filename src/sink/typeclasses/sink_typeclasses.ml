@@ -1,3 +1,5 @@
+(** The following modules are re-exported by [Sink], so are listed here with
+    documentation comments. *)
 module Export = struct
   (** {1 Typeclasses for data} *)
 
@@ -41,3 +43,4 @@ end
 
 include Export
 module Ordering = Ordering
+module T = T

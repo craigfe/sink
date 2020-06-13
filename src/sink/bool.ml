@@ -1,7 +1,7 @@
 open Import
 module B = Stdlib.Bool
 
-type t = bool
+type t = bool [@@deriving branded]
 
 external not : bool -> bool = "%boolnot"
 

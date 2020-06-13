@@ -21,7 +21,7 @@ module Ordering = Sink_typeclasses.Ordering
     increasing number of type parameters. We export them into the global
     name-space. *)
 
-module T = T
+module T = Sink_typeclasses.T
 
 include T
 (** @closed *)

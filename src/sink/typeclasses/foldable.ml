@@ -1,6 +1,6 @@
 include Foldable_intf
 
-module Make_default (X : MINIMAL) : S with type 'a t := 'a X.t = struct
+module Make_default (X : MINIMAL) : S1 with type 'a t := 'a X.t = struct
   let fold_left = X.fold_left
 
   let fold (type m) ({ append; empty } : m Monoid.t) = fold_left append empty

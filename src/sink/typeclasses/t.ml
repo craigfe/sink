@@ -3,13 +3,13 @@ module type T = sig
 end
 
 module type T1 = sig
-  type 'a t
+  type _ t
 end
 
 module type T2 = sig
-  type ('a, 'b) t
+  type (_, _) t
 end
 
 module type T3 = sig
-  type ('a, 'b, 'c) t
+  type (_, _, _) t
 end

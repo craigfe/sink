@@ -1,7 +1,7 @@
 open Import
 module I = Stdlib.Int64
 
-type t = int64
+type t = int64 [@@deriving branded]
 
 let to_string = I.to_string
 

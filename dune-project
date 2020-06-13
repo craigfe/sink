@@ -43,3 +43,9 @@
  (synopsis "Derive sets of infix operators from module types")
  (description "Derive sets of infix operators from module types")
  (documentation https://CraigFe.github.io/sink/))
+
+(package
+ (name ppx_deriving_branded)
+ (synopsis "Derive type brands for higher-kinded polymorphism")
+ (description "Derive type brands for higher-kinded polymorphism")
+ (documentation https://CraigFe.github.io/sink/))

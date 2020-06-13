@@ -1,4 +1,6 @@
-type 'a t = 'a array
+open Import
+
+type 'a t = 'a array [@@implements Higher.BRANDED]
 
 (* include Foldable.S with type 'a t := 'a t
  * 

@@ -1,9 +1,3 @@
-type 't t = {
-  compare : 't -> 't -> Ordering.t;
-  max : 't -> 't -> 't;
-  min : 't -> 't -> 't;
-}
-
 module type S = sig
   type t
 
@@ -15,6 +9,7 @@ module type S = sig
 
   val min : t -> t -> t
 end
+[@@deriving typeclass]
 
 module type S1 = sig
   type 'a t
@@ -45,7 +40,7 @@ module type INFIX = sig
 end
 
 module type Ord = sig
-  type nonrec 't t = private 't t
+  type nonrec 't t = 't t
 
   module type S = S
 

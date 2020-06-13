@@ -1,1 +1,3 @@
-type 'a t = 'a ref
+open Import
+
+type 'a t = 'a ref [@@deriving branded]

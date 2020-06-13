@@ -1,1 +1,3 @@
-type 'a t = 'a array
+open Import
+
+type 'a t = 'a array [@@deriving branded]

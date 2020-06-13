@@ -4,7 +4,7 @@ module type MINIMAL = sig
   val fold_left : ('acc -> 'a -> 'acc) -> 'acc -> 'a t -> 'acc
 end
 
-module type S = sig
+module type S1 = sig
   type 'a t
 
   val fold : 'm Monoid.t -> 'm t -> 'm
@@ -30,9 +30,9 @@ end
 [@@deriving typeclass]
 
 module type Foldable = sig
-  module type S = S
+  module type S1 = S1
 
-  module Make_default (X : MINIMAL) : S with type 'a t := 'a X.t
+  module Make_default (X : MINIMAL) : S1 with type 'a t := 'a X.t
 
   (* module Dict : sig
    *   type 't fold_left =
