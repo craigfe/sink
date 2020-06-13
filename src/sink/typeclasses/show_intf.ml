@@ -16,8 +16,6 @@ module type INFIX = sig
 end
 
 module type Show = sig
-  type nonrec 't t = private 't t
-
   module type S = S
 
   module type S2 = S2

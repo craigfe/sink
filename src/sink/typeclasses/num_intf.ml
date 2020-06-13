@@ -5,23 +5,13 @@ module type S = sig
 
   val abs : t -> t
 
-  val add : t -> t -> t
+  val add : t -> t -> t [@@infix ( + )]
 
-  val subtract : t -> t -> t
+  val subtract : t -> t -> t [@@infix ( - )]
 
-  val multiply : t -> t -> t
+  val multiply : t -> t -> t [@@infix ( * )]
 end
-[@@deriving typeclass]
-
-module type INFIX = sig
-  type t
-
-  val ( + ) : t -> t -> t
-
-  val ( - ) : t -> t -> t
-
-  val ( * ) : t -> t -> t
-end
+[@@deriving typeclass, infix]
 
 module type Num = sig
   module type S = S

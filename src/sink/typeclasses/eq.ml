@@ -1,15 +1,9 @@
 module type S = sig
   type t
 
-  val equal : t -> t -> bool
+  val equal : t -> t -> bool [@@infix ( = )]
 end
-[@@deriving typeclass]
-
-module type INFIX = sig
-  type t
-
-  val ( = ) : t -> t -> bool
-end
+[@@deriving typeclass, infix]
 
 module type S2 = sig
   type 'a t

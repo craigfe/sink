@@ -3,18 +3,10 @@ module type S = sig
 
   val pure : 'a -> 'a t
 
-  val apply : ('a -> 'b) t -> 'a t -> 'b t
+  val apply : ('a -> 'b) t -> 'a t -> 'b t [@@infix ( <*> )]
 
   val lift2 : ('a -> 'b -> 'c) -> 'a t -> 'b t -> 'c t
 
-  val seq : 'a t -> 'b t -> 'b t
+  val seq : 'a t -> 'b t -> 'b t [@@infix ( *> )]
 end
-[@@deriving typeclass]
-
-module type INFIX = sig
-  type 'a t
-
-  val ( <*> ) : ('a -> 'b) t -> 'a t -> 'b t
-
-  val ( *> ) : 'a t -> 'b t -> 'b t
-end
+[@@deriving typeclass, infix]

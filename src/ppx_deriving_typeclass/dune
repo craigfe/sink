@@ -1,4 +1,4 @@
 (library
- (public_name ppx_typeclass)
+ (public_name ppx_deriving_typeclass)
  (kind ppx_deriver)
  (libraries ppxlib))

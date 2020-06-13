@@ -3,11 +3,11 @@ module type S = sig
 
   val return : 'a -> 'a t
 
-  val bind : 'a t -> ('a -> 'b t) -> 'b t
+  val bind : 'a t -> ('a -> 'b t) -> 'b t [@@infix ( >>= )]
 
-  val kliesli : ('a -> 'b t) -> ('b -> 'c t) -> 'a -> 'c t
+  val kliesli : ('a -> 'b t) -> ('b -> 'c t) -> 'a -> 'c t [@@infix ( >=> )]
 end
-[@@deriving typeclass]
+[@@deriving typeclass, infix]
 
 (** Equal to [S] but with a second irrelevant type parameter. *)
 module type S2 = sig
@@ -18,20 +18,6 @@ module type S2 = sig
   val bind : ('a, 'e) t -> ('a -> ('b, 'e) t) -> ('b, 'e) t
 
   val kliesli : ('a -> ('b, 'e) t) -> ('b -> ('c, 'e) t) -> 'a -> ('c, 'e) t
-end
-
-module type INFIX = sig
-  type 'a t
-
-  include Functor.INFIX with type 'a t := 'a t
-
-  val ( >>= ) : 'a t -> ('a -> 'b t) -> 'b t
-  (** The infix form of {!S.bind}. *)
-
-  val ( >=> ) : ('a -> 'b t) -> ('b -> 'c t) -> 'a -> 'c t
-  (** The infix form of {!S.kliesli}. *)
-
-  val ( *> ) : 'a t -> 'b t -> 'b t
 end
 
 module type INFIX2 = sig

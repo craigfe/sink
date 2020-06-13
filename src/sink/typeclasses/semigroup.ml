@@ -1,15 +1,9 @@
 module type S = sig
   type t
 
-  val combine : t -> t -> t
+  val combine : t -> t -> t [@@infix ( <> )]
 end
-[@@deriving typeclass]
-
-module type INFIX = sig
-  type t
-
-  val ( <> ) : t -> t -> t
-end
+[@@deriving typeclass, infix]
 
 module type S1 = sig
   type 'a t

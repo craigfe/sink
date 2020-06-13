@@ -27,7 +27,13 @@
 ;; PPXes used in the implementation of Sink
 
 (package
- (name ppx_typeclass)
- (synopsis "Derive first-class equivalents of type signatures")
+ (name ppx_deriving_typeclass)
+ (synopsis "Derive first-class equivalents of module types")
  (description "Derive first-class equivalends of type signatures")
+ (documentation https://CraigFe.github.io/sink/))
+
+(package
+ (name ppx_deriving_infix)
+ (synopsis "Derive sets of infix operators from module types")
+ (description "Derive sets of infix operators from module types")
  (documentation https://CraigFe.github.io/sink/))
