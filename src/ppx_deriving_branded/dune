@@ -1,4 +1,0 @@
-(library
- (public_name ppx_deriving_branded)
- (kind ppx_deriver)
- (libraries ppxlib))

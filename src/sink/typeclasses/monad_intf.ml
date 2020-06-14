@@ -81,6 +81,8 @@ module type Monad = sig
 
   module type S = S
 
+  type nonrec 'a t = 'a t
+
   module type S1 = S1
 
   module type S2 = S2

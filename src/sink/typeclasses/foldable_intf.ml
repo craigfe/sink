@@ -33,33 +33,4 @@ module type Foldable = sig
   module type S1 = S1
 
   module Make_default (X : MINIMAL) : S1 with type 'a t := 'a X.t
-
-  (* module Dict : sig
-   *   type 't fold_left =
-   *     < fold_left :
-   *         'a 'acc. ('acc -> 'a -> 'acc) -> 'acc -> ('a, 't) app -> 'acc >
-   * 
-   *   type 't fold_right =
-   *     < fold_right :
-   *         'a 'acc. ('a -> 'acc -> 'acc) -> ('a, 't) app -> 'acc -> 'acc >
-   * 
-   *   type 't fold = < fold : 'm. 'm Monoid.t -> ('m, 't) app -> 'm >
-   * 
-   *   type 't null = < null : 'a. ('a, 't) app -> bool >
-   * 
-   *   val create :
-   *     fold_left:< 't fold_left ; .. > ->
-   *     fold_right:< 't fold_right ; .. > ->
-   *     (\* Derivable implementations *\)
-   *     ?fold:< 't fold ; .. > ->
-   *     ?null:< 't null ; .. > ->
-   *     ?length:< length : 'a. ('a, 't) app -> int ; .. > ->
-   *     ?mem:< mem : 'a. 'a Eq.t -> 'a -> ('a, 't) app -> bool ; .. > ->
-   *     ?maximum:< maximum : 'a. 'a Ord.t -> ('a, 't) app -> 'a ; .. > ->
-   *     ?minimum:< minimum : 'a. 'a Ord.t -> ('a, 't) app -> 'a ; .. > ->
-   *     ?sum:< sum : (int, 't) app -> int ; .. > ->
-   *     ?product:< product : (int, 't) app -> int ; .. > ->
-   *     unit ->
-   *     't t
-   * end *)
 end

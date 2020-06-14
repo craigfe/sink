@@ -2,7 +2,14 @@ open Import
 
 type 'a t = 'a list
 [@@implements
-  Semigroup.S, Foldable.S, Functor.S, Applicative.S, Monad.S, Typeable.S]
+  Semigroup.S,
+    Eq.S,
+    Foldable.S,
+    Functor.S,
+    Applicative.S,
+    Monad.S,
+    Typeable.S,
+    Higher.BRANDED]
 
 val is_empty : 'a list -> bool
 

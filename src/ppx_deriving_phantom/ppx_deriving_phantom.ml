@@ -21,7 +21,6 @@ open Ppxlib
 
         val map : ('a -> 'b) -> ('a, 'phan) t -> ('b, 'phan) t
       end
-      [@@deriving phantom]
     ]} *)
 
 let add_phantom_parameter_to (module A : Ast_builder.S) id =
@@ -77,18 +76,31 @@ let add_phantom_parameter ~loc ~path:_
     pmtd_name.txt
     |> map_integer_suffix (function Some i -> i + 1 | None -> 1)
     |> Located.mk
-  in
-  let pmtd_type =
+  and pmtd_type =
     pmtd_type
     |> Option.map (add_phantom_parameter_to (module A) "t")#module_type
-  in
-  let pmtd_attributes =
+  and pmtd_attributes =
+    let doc =
+      attribute ~name:(Located.mk "ocaml.doc")
+        ~payload:
+          (PStr
+             [
+               pstr_eval
+                 (estring
+                    (Format.sprintf
+                       "Equal to {!%s} but with an additional type parameter"
+                       pmtd_name.txt))
+                 [];
+             ])
+    in
+
     match subderiving with
-    | None -> []
+    | None -> [ doc ]
     | Some e ->
         [
           attribute ~name:(Located.mk "deriving")
             ~payload:(PStr [ pstr_eval e [] ]);
+          doc;
         ]
   in
   [ pstr_modtype { pmtd_name; pmtd_type; pmtd_attributes; pmtd_loc = A.loc } ]

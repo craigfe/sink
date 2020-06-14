@@ -40,7 +40,7 @@
  (documentation https://CraigFe.github.io/sink/))
 
 (package
- (name ppx_deriving_branded)
+ (name ppx_brands)
  (synopsis "Derive type brands for higher-kinded polymorphism")
  (documentation https://CraigFe.github.io/sink/))
 

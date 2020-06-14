@@ -2,5 +2,6 @@
  (name sink)
  (public_name sink)
  (preprocess
-  (pps ppx_deriving_typeclass ppx_deriving_branded ppx_implements))
+  (pps ppx_deriving_typeclass ppx_brands.deriver ppx_brands.rewriter
+    ppx_implements))
  (libraries sink.typeclasses))

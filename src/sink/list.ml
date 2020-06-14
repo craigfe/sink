@@ -5,51 +5,85 @@ type 'a t = 'a list [@@deriving branded]
 
 let t _ = failwith "TODO"
 
-let map = L.map
+include (
+  struct
+    let combine _ = failwith "TODO"
+  end :
+    Semigroup.S1 with type 'a t := 'a t )
 
-let return x = [ x ]
+include (
+  struct
+    let equal (type e) (eq : e Eq.t) xs ys =
+      let rec inner = function
+        | [], [] -> true
+        | x :: xs, y :: ys -> eq.equal x y && inner (xs, ys)
+        | _, _ -> false
+      in
+      inner (xs, ys)
+  end :
+    Eq.S1 with type 'a t := 'a t )
 
-let pure = return
+include (
+  struct
+    let map = L.map
+  end :
+    Functor.S1 with type 'a t := 'a t )
 
-let bind l f = L.map f l |> L.flatten
+include (
+  struct
+    let return x = [ x ]
 
-let kliesli f g x = bind (f x) g
+    let bind l f = L.map f l |> L.flatten
 
-let seq _ = failwith "TODO"
+    let kliesli f g x = bind (f x) g
+  end :
+    Monad.S1 with type 'a t := 'a t )
 
-let lift2 _ = failwith "TODO"
+include (
+  struct
+    let pure x = [ x ]
 
-let apply _ = failwith "TODO"
+    let apply fs xs = bind fs (fun f -> L.map (fun x -> f x) xs)
 
-let null _ = failwith "TODO"
+    let lift2 f xs ys = bind xs (fun x -> L.map (f x) ys)
 
-let combine _ = failwith "TODO"
+    let seq _ ys = ys
+  end :
+    Applicative.S1 with type 'a t := 'a t )
 
-(** Foldable instance *)
+include (
+  struct
+    let fold (type m) (m : m Monoid.t) = L.fold_left m.append m.empty
 
-let fold (type m) (m : m Monoid.t) = L.fold_left m.append m.empty
+    let fold_left = L.fold_left
 
-let fold_left = L.fold_left
+    let fold_right = L.fold_right
 
-let fold_right = L.fold_right
+    let null = function [] -> true | _ -> false
+
+    let length = L.length
+
+    let rec mem Eq.{ equal } a = function
+      | [] -> false
+      | x :: xs -> equal a x || mem { equal } a xs
+
+    let maximum (type o) ({ max; _ } : o Ord.t) = function
+      | [] -> None
+      | x :: xs -> Some (fold_left max x xs)
+
+    let minimum (type o) ({ min; _ } : o Ord.t) = function
+      | [] -> None
+      | x :: xs -> Some (fold_left min x xs)
+
+    let product = fold_left ( * ) 1
+
+    let sum = fold_left ( + ) 0
+  end :
+    Foldable.S1 with type 'a t := 'a t )
 
 let is_empty = function [] -> true | _ :: _ -> false
 
 let length = L.length
-
-let mem _ = failwith "TODO"
-
-let maximum (type o) (o : o Ord.t) = function
-  | [] -> None
-  | x :: xs -> Some (L.fold_left o.max x xs)
-
-let minimum (type o) (o : o Ord.t) = function
-  | [] -> None
-  | x :: xs -> Some (L.fold_left o.min x xs)
-
-let sum = fold_left ( + ) 0
-
-let product = fold_left ( * ) 1
 
 let sequence_result list =
   let rec inner acc = function
