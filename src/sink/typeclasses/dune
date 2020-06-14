@@ -2,4 +2,4 @@
  (name sink_typeclasses)
  (public_name sink.typeclasses)
  (preprocess
-  (pps ppx_deriving_typeclass ppx_deriving_infix)))
+  (pps ppx_deriving_typeclass ppx_deriving_infix ppx_deriving_phantom)))

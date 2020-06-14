@@ -3,13 +3,7 @@ module type S = sig
 
   val to_string : t -> string
 end
-[@@deriving typeclass]
-
-module type S1 = sig
-  type 'a t
-
-  val to_string : 'a t -> string
-end
+[@@deriving typeclass, phantom]
 
 module type INFIX = sig
   type t

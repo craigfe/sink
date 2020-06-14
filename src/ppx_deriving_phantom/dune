@@ -1,0 +1,4 @@
+(library
+ (public_name ppx_deriving_phantom)
+ (kind ppx_deriver)
+ (libraries ppxlib))

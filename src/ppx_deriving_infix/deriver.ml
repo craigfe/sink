@@ -1,5 +1,24 @@
 open Ppxlib
 
+let split_at_index : int -> string -> string * string =
+ fun i s -> (String.sub s 0 i, String.sub s i (String.length s - i))
+
+let split_integer_suffix s : string * int option =
+  let last = String.length s - 1 in
+  let digit_at_index i =
+    let c = s.[i] in
+    48 <= Char.code c && Char.code c < 58
+  in
+  let rec aux = function
+    | -1 -> ("", s) (* The whole string is an integer *)
+    | n when digit_at_index n -> aux (n - 1)
+    | n -> split_at_index (n + 1) s
+  in
+  if digit_at_index last then
+    let prefix, suffix = aux last in
+    (prefix, Some (int_of_string suffix))
+  else (s, None)
+
 module type S = sig
   val derive_infix : module_type_declaration -> structure
 end
@@ -58,7 +77,7 @@ module Located (A : Ast_builder.S) : S = struct
   (** {[
         module Make_infix (X : S) : INFIX with type 'a t := 'a X.t = struct ...end
       ]} *)
-  let wrap_str_aliases ~tdecls ~prefix_mtyp_name str_items =
+  let wrap_str_aliases ~index_suffix ~tdecls ~prefix_mtyp_name str_items =
     let constraint_of_td td =
       let td = name_type_params_in_td td in
       let for_subst =
@@ -93,7 +112,8 @@ module Located (A : Ast_builder.S) : S = struct
     let _constraints = tdecls |> List.map constraint_of_td in
 
     pstr_module
-      (module_binding ~name:(Located.mk "Make_infix")
+      (module_binding
+         ~name:(Located.mk ("Make_infix" ^ index_suffix))
          ~expr:
            (pmod_functor (Located.mk "X")
               (Some (pmty_ident (Located.lident prefix_mtyp_name)))
@@ -124,9 +144,10 @@ module Located (A : Ast_builder.S) : S = struct
       }
 
   (** {[ module type INFIX = sig ... end ]} *)
-  let wrap_sig_aliases sig_items =
+  let wrap_sig_aliases ~index_suffix sig_items =
     let type_ = Some (pmty_signature sig_items) in
-    module_type_declaration ~name:(Located.mk "INFIX") ~type_ |> pstr_modtype
+    module_type_declaration ~name:(Located.mk ("INFIX" ^ index_suffix)) ~type_
+    |> pstr_modtype
 
   let process_item ~prefix_mtyp_name acc item =
     match item.psig_desc with
@@ -159,6 +180,11 @@ module Located (A : Ast_builder.S) : S = struct
   (** Traverse the module type, replacing all instances of ['a t] with
       [('a, br) app]. *)
   let derive_infix { pmtd_type; pmtd_name = { txt = prefix_mtyp_name; _ }; _ } =
+    let index_suffix =
+      split_integer_suffix prefix_mtyp_name |> snd |> function
+      | Some i -> string_of_int i
+      | None -> ""
+    in
     match pmtd_type with
     | Some { pmty_desc = Pmty_signature items; _ } ->
         let { infix_lets; infix_vals; tdecls } =
@@ -171,8 +197,8 @@ module Located (A : Ast_builder.S) : S = struct
         and infix_vals = List.rev infix_vals
         and tdecls = List.rev tdecls in
         [
-          wrap_sig_aliases infix_vals;
-          wrap_str_aliases ~tdecls ~prefix_mtyp_name infix_lets;
+          wrap_sig_aliases ~index_suffix infix_vals;
+          wrap_str_aliases ~index_suffix ~tdecls ~prefix_mtyp_name infix_lets;
         ]
     | None -> failwith "Abstract module type"
     | Some _ -> failwith "Unsupported module type definition"

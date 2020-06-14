@@ -1,4 +1,4 @@
-module type S = sig
+module type S1 = sig
   type 'a t
 
   val return : 'a -> 'a t
@@ -7,34 +7,9 @@ module type S = sig
 
   val kliesli : ('a -> 'b t) -> ('b -> 'c t) -> 'a -> 'c t [@@infix ( >=> )]
 end
-[@@deriving typeclass, infix]
+[@@deriving typeclass, infix, phantom { subderiving = infix }]
 
-module type S1 = S
-
-(** Equal to [S] but with a second irrelevant type parameter. *)
-module type S2 = sig
-  type ('a, 'e) t
-
-  val return : 'a -> ('a, 'e) t
-
-  val bind : ('a, 'e) t -> ('a -> ('b, 'e) t) -> ('b, 'e) t
-
-  val kliesli : ('a -> ('b, 'e) t) -> ('b -> ('c, 'e) t) -> 'a -> ('c, 'e) t
-end
-
-module type INFIX2 = sig
-  type ('a, 'e) t
-
-  include Functor.INFIX2 with type ('a, 'e) t := ('a, 'e) t
-
-  val ( >>= ) : ('a, 'e) t -> ('a -> ('b, 'e) t) -> ('b, 'e) t
-  (** The infix form of {!S.bind}. *)
-
-  val ( >=> ) : ('a -> ('b, 'e) t) -> ('b -> ('c, 'e) t) -> 'a -> ('c, 'e) t
-  (** The infix form of {!S.kliesli}. *)
-
-  val ( *> ) : ('a, 'e) t -> ('b, 'e) t -> ('b, 'e) t
-end
+module type S = S1
 
 module type SYNTAX = sig
   type 'a t
@@ -48,7 +23,7 @@ end
 module type READER = sig
   (** Computations that read values from a shared environment. *)
 
-  include S
+  include S1
 
   type e
   (** The type of inputs to reader actions. *)
@@ -68,7 +43,7 @@ module type READER = sig
 end
 
 module type WRITER = sig
-  include S
+  include S1
 
   type w
   (** The type of outputs emitted by writer actions. *)
@@ -110,7 +85,7 @@ module type Monad = sig
 
   module type S2 = S2
 
-  module type INFIX = INFIX
+  module type INFIX1 = INFIX1
 
   module type INFIX2 = INFIX2
 
