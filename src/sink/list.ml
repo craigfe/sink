@@ -50,3 +50,17 @@ let minimum (type o) (o : o Ord.t) = function
 let sum = fold_left ( + ) 0
 
 let product = fold_left ( * ) 1
+
+let sequence_result list =
+  let rec inner acc = function
+    | [] -> Ok (L.rev acc)
+    | Error e :: _ -> Error e
+    | Ok o :: tl -> (inner [@ocaml.tailcall]) (o :: acc) tl
+  in
+  inner [] list
+
+let rec unzip : type a b. (a * b) list -> a list * b list = function
+  | [] -> ([], [])
+  | (x, y) :: l ->
+      let xs, ys = unzip l in
+      (x :: xs, y :: ys)

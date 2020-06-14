@@ -60,6 +60,13 @@ let implements =
 (** Similar to [Ppxlib.mk_named_sig]. *)
 let mk_named_sig (module A : Ast_builder.S) ~sg_name =
   let open A in
+  let add_closed_attribute incl =
+    let attr =
+      attribute ~name:(Located.mk "ocaml.doc")
+        ~payload:(PStr [ pstr_eval (estring "@closed") [] ])
+    in
+    { incl with pincl_attributes = attr :: incl.pincl_attributes }
+  in
   function
   | [
       ( { ptype_name = { txt = "t"; _ }; ptype_cstrs = []; ptype_params; _ } as
@@ -70,17 +77,20 @@ let mk_named_sig (module A : Ast_builder.S) ~sg_name =
         if arity = 0 then sg_name else Printf.sprintf "%s%d" sg_name arity
       in
       let td = name_type_params_in_td td in
-      (let for_subst =
-         Ast_helper.Type.mk ~loc td.ptype_name ~params:td.ptype_params
-           ~manifest:
-             (ptyp_constr
-                (Located.map_lident td.ptype_name)
-                (List.map fst ptype_params))
-       in
-       include_infos
-         (pmty_with
-            (pmty_ident (Located.lident mty))
-            [ Pwith_typesubst (Located.lident "t", for_subst) ]))
+      let for_subst =
+        type_declaration ~name:td.ptype_name ~params:td.ptype_params ~cstrs:[]
+          ~private_:Public ~kind:Ptype_abstract
+          ~manifest:
+            (Some
+               (ptyp_constr
+                  (Located.map_lident td.ptype_name)
+                  (List.map fst ptype_params)))
+      in
+      include_infos
+        (pmty_with
+           (pmty_ident (Located.lident mty))
+           [ Pwith_typesubst (Located.lident "t", for_subst) ])
+      |> add_closed_attribute
       |> psig_include
   | _ -> assert false
 

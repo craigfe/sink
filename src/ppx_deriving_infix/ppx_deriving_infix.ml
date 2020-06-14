@@ -13,7 +13,7 @@ open Ppxlib
       [@@deriving infix]
     ]}
 
-    generate a new module type of the form:
+    generate new items of the form:
 
     {[
       module type INFIX = sig
@@ -21,10 +21,13 @@ open Ppxlib
 
         val ( <+> ) : t -> int -> t
       end
-    ]}
 
-    That is, a new module type with the same types and value descriptions with
-    [\[@@infix ... \]] attributes carried over and renamed to the infix form. *)
+      module Make_infix (X : S) : INFIX with type t := X.t = struct ... end
+    ]}
+    - a new module type with the same types and value descriptions with
+      [\[@@infix ... \]] attributes carried over and renamed to the infix form.
+
+    - a coercion from the prefix to the infix form. *)
 
 let expand_module_type ~loc ~path:_ input_ast =
   let (module S) = Ast_builder.make loc in
