@@ -5,85 +5,71 @@ type 'a t = 'a list [@@deriving branded]
 
 let t _ = failwith "TODO"
 
-include (
-  struct
-    let combine _ = failwith "TODO"
-  end :
-    Semigroup.S1 with type 'a t := 'a t )
+let empty = []
 
-include (
-  struct
-    let equal (type e) (eq : e Eq.t) xs ys =
-      let rec inner = function
-        | [], [] -> true
-        | x :: xs, y :: ys -> eq.equal x y && inner (xs, ys)
-        | _, _ -> false
-      in
-      inner (xs, ys)
-  end :
-    Eq.S1 with type 'a t := 'a t )
+let append = L.append
 
-include (
-  struct
-    let map = L.map
-  end :
-    Functor.S1 with type 'a t := 'a t )
+let equal (type e) (eq : e Eq.t) xs ys =
+  let rec inner = function
+    | [], [] -> true
+    | x :: xs, y :: ys -> eq.equal x y && inner (xs, ys)
+    | _, _ -> false
+  in
+  inner (xs, ys)
 
-include (
-  struct
-    let return x = [ x ]
+let map = L.map
 
-    let bind l f = L.map f l |> L.flatten
+let init = L.init
 
-    let kliesli f g x = bind (f x) g
-  end :
-    Monad.S1 with type 'a t := 'a t )
+let return x = [ x ]
 
-include (
-  struct
-    let pure x = [ x ]
+let bind l f = L.map f l |> L.flatten
 
-    let apply fs xs = bind fs (fun f -> L.map (fun x -> f x) xs)
+let kliesli f g x = bind (f x) g
 
-    let lift2 f xs ys = bind xs (fun x -> L.map (f x) ys)
+let join = L.flatten
 
-    let seq _ ys = ys
-  end :
-    Applicative.S1 with type 'a t := 'a t )
+let pure x = [ x ]
 
-include (
-  struct
-    let fold (type m) (m : m Monoid.t) = L.fold_left m.append m.empty
+let apply fs xs = bind fs (fun f -> L.map (fun x -> f x) xs)
 
-    let fold_left = L.fold_left
+let lift2 f xs ys = bind xs (fun x -> L.map (f x) ys)
 
-    let fold_right = L.fold_right
+let seq _ ys = ys
 
-    let null = function [] -> true | _ -> false
+let fold (type m) (m : m Monoid.t) = L.fold_left m.append m.empty
 
-    let length = L.length
+let fold_left = L.fold_left
 
-    let rec mem Eq.{ equal } a = function
-      | [] -> false
-      | x :: xs -> equal a x || mem { equal } a xs
+let fold_right = L.fold_right
 
-    let maximum (type o) ({ max; _ } : o Ord.t) = function
-      | [] -> None
-      | x :: xs -> Some (fold_left max x xs)
-
-    let minimum (type o) ({ min; _ } : o Ord.t) = function
-      | [] -> None
-      | x :: xs -> Some (fold_left min x xs)
-
-    let product = fold_left ( * ) 1
-
-    let sum = fold_left ( + ) 0
-  end :
-    Foldable.S1 with type 'a t := 'a t )
-
-let is_empty = function [] -> true | _ :: _ -> false
+let null = function [] -> true | _ -> false
 
 let length = L.length
+
+let rec mem Eq.{ equal } a = function
+  | [] -> false
+  | x :: xs -> equal a x || mem { equal } a xs
+
+let maximum (type o) ({ max; _ } : o Ord.t) = function
+  | [] -> None
+  | x :: xs -> Some (fold_left max x xs)
+
+let minimum (type o) ({ min; _ } : o Ord.t) = function
+  | [] -> None
+  | x :: xs -> Some (fold_left min x xs)
+
+let iter = L.iter
+
+let to_list t = t
+
+let to_array = Stdlib.Array.of_list
+
+let product = fold_left ( * ) 1
+
+let sum = fold_left ( + ) 0
+
+let is_empty = function [] -> true | _ :: _ -> false
 
 let sequence_result list =
   let rec inner acc = function
@@ -93,8 +79,35 @@ let sequence_result list =
   in
   inner [] list
 
-let rec unzip : type a b. (a * b) list -> a list * b list = function
+let rec zip xs ys =
+  match (xs, ys) with x :: xs, y :: ys -> (x, y) :: zip xs ys | _, _ -> []
+
+let rec zip_with f xs ys =
+  match (xs, ys) with
+  | x :: xs, y :: ys -> f x y :: zip_with f xs ys
+  | _, _ -> []
+
+let rec unzip = function
   | [] -> ([], [])
   | (x, y) :: l ->
       let xs, ys = unzip l in
       (x :: xs, y :: ys)
+
+let rec unzip_with f = function
+  | [] -> ([], [])
+  | hd :: tl ->
+      let x, y = f hd in
+      let xs, ys = unzip_with f tl in
+      (x :: xs, y :: ys)
+
+let rev = L.rev
+
+let take_while p =
+  let rec aux acc = function
+    | [] -> rev acc
+    | x :: xs when p x -> (aux [@tailcall]) (x :: acc) xs
+    | _ :: xs -> (aux [@tailcall]) acc xs
+  in
+  aux []
+
+let rec drop_while p = function x :: xs when p x -> drop_while p xs | l -> l

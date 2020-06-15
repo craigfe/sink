@@ -9,6 +9,11 @@ doc: "https://CraigFe.github.io/sink/"
 bug-reports: "https://github.com/CraigFe/sink/issues"
 depends: [
   "dune" {>= "2.5"}
+  "ppx_brands" {= version}
+  "ppx_deriving_typeclass" {= version}
+  "ppx_deriving_phantom" {= version}
+  "ppx_implements" {= version}
+  "alcotest" {>= "1.0.0" & with-test}
 ]
 build: [
   ["dune" "subst"] {pinned}

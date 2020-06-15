@@ -1,11 +1,17 @@
 module type S = sig
+  type t
+
+  type elt
+
+  val map : (elt -> elt) -> t -> t
+end
+
+module type S1 = sig
   type 'a t
 
   val map : ('a -> 'b) -> 'a t -> 'b t
 end
 [@@deriving typeclass]
-
-module type S1 = S
 
 module type INFIX = sig
   type 'a t
@@ -29,7 +35,7 @@ module type SYNTAX = sig
 end
 
 module type EXT = sig
-  include S
+  include S1
 
   module Infix : INFIX with type 'a t := 'a t
 

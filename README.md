@@ -12,7 +12,9 @@ __Should I use it?__ Almost certainly not.
 <details>
 <summary>Vague design principles: (click to unfold)</summary>
 
-- __Consistent interfaces__.
+- __Consistent interfaces__. Very similar to the approach taken in [base], type
+  interfaces are constructed using a combination of functors and PPX to ensure
+  consistency.
 
 - __Type-class dictionaries__.
 

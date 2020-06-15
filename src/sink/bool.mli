@@ -10,4 +10,8 @@ external ( || ) : bool -> bool -> bool = "%sequor"
 
 external to_int : bool -> int = "%identity"
 
+module Forall : Monoid.S with type t := t
+
+module Exists : Monoid.S with type t := t
+
 val to_float : bool -> float

@@ -1,3 +1,4 @@
+(* TODO: remove? *)
 module type S = sig
   type t
 

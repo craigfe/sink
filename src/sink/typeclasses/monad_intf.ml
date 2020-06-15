@@ -1,18 +1,18 @@
 module type S1 = sig
-  type 'a t
+  type +'a t
 
   val return : 'a -> 'a t
 
   val bind : 'a t -> ('a -> 'b t) -> 'b t [@@infix ( >>= )]
 
   val kliesli : ('a -> 'b t) -> ('b -> 'c t) -> 'a -> 'c t [@@infix ( >=> )]
+
+  val join : 'a t t -> 'a t
 end
 [@@deriving typeclass, infix, phantom { subderiving = infix }]
 
-module type S = S1
-
-module type SYNTAX = sig
-  type 'a t
+module type Syntax = sig
+  type +'a t
 
   include Functor.SYNTAX with type 'a t := 'a t
 
@@ -20,7 +20,7 @@ module type SYNTAX = sig
   (** Syntax alias of {!S.bind}. *)
 end
 
-module type READER = sig
+module type Reader = sig
   (** Computations that read values from a shared environment. *)
 
   include S1
@@ -42,7 +42,21 @@ module type READER = sig
       [f]. *)
 end
 
-module type WRITER = sig
+module type Reader_open = sig
+  type (+'a, +'e) t
+
+  include S2 with type ('a, 'e) t := ('a, 'e) t
+
+  val run : ('a, 'e) t -> 'e -> 'a
+
+  val ask : ('e, 'e) t
+
+  val asks : ('e -> 'a) -> ('a, 'e) t
+
+  val local : ('e -> 'e) -> ('a, 'e) t -> ('a, 'e) t
+end
+
+module type Writer = sig
   include S1
 
   type w
@@ -65,8 +79,24 @@ module type WRITER = sig
   (** Create a simple writer action. (Inverse of {!run}.) *)
 end
 
-module type STATE = sig
-  include S
+module type Writer_open = sig
+  type (+'a, -'w) t
+
+  include S2 with type ('a, 'w) t := ('a, 'w) t
+
+  val tell : 'w -> (unit, 'w) t
+
+  val listen : ('a, 'w) t -> ('a, 'w) t
+
+  val run : ('a, 'w) t -> 'a * 'w
+
+  val exec : ('a, 'w) t -> 'w
+
+  val writer : 'a -> 'w -> ('a, 'w) t
+end
+
+module type State = sig
+  include S1
 
   type s
   (** The type of state underlying state actions. *)
@@ -79,8 +109,6 @@ module type Monad = sig
       - {b right identity}. [(m >>= return) ≡ m];
       - {b associativity}. [((m >>= f) >>= g) ≡ (m >>= (f >=> g))]. *)
 
-  module type S = S
-
   type nonrec 'a t = 'a t
 
   module type S1 = S1
@@ -91,7 +119,7 @@ module type Monad = sig
 
   module type INFIX2 = INFIX2
 
-  module type SYNTAX = SYNTAX
+  module type Syntax = Syntax
 
   (** {1 Standard monad instances} *)
 

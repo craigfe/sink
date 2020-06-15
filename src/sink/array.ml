@@ -1,52 +1,46 @@
 open Import
 module A = Stdlib.Array
 
-type 'a t = 'a array [@@deriving branded]
+module T = struct
+  type 'a t = 'a array [@@deriving branded]
 
-(* let forall f t =
- *   let rec inner i = if i < 0 then true else f (A.get t i) && inner (i - 1) in
- *   inner (A.length t - 1) *)
+  (* let forall2_exn f t1 t2 =
+   *   let len = A.length t1 in
+   *   if A.length t2 <> len then invalid_arg "Array.for_all2_exn";
+   *   let rec inner i =
+   *     if i < 0 then true else f (A.get t1 i) (A.get t2 i) && inner (i - 1)
+   *   in
+   *   inner (len - 1) *)
 
-let exists f t =
-  let rec inner i = if i < 0 then false else f (A.get t i) || inner (i - 1) in
-  inner (A.length t - 1)
+  let combine = A.append
 
-(* let forall2_exn f t1 t2 =
- *   let len = A.length t1 in
- *   if A.length t2 <> len then invalid_arg "Array.for_all2_exn";
- *   let rec inner i =
- *     if i < 0 then true else f (A.get t1 i) (A.get t2 i) && inner (i - 1)
- *   in
- *   inner (len - 1) *)
+  let get = A.get
 
-include (
-  struct
-    let combine = A.append
-  end :
-    Semigroup.S1 with type 'a t := 'a t )
+  let fold (type m) (m : m Monoid.t) = A.fold_left m.append m.empty
 
-include (
-  struct
-    let fold (type m) (m : m Monoid.t) = A.fold_left m.append m.empty
+  let length = A.length
 
-    let fold_left = A.fold_left
+  let minimum _ = failwith "TODO"
 
-    let fold_right = A.fold_right
+  let blit = A.blit
 
-    let null i = A.length i = 0
+  let t _ = failwith "TODO"
 
-    let length = A.length
+  let init = A.init
 
-    let mem Eq.{ equal } elt t = exists (equal elt) t
+  let to_list = A.to_list
 
-    let maximum _ = failwith "TODO"
+  let to_array t = t
 
-    let minimum _ = failwith "TODO"
+  let iter = A.iter
+end
 
-    let product = fold_left ( * ) 1
+include T
 
-    let sum = fold_left ( + ) 0
-  end :
-    Foldable.S1 with type 'a t := 'a t )
+include Foldable.Of_indexed (struct
+  include T
 
-let t _ = failwith "TODO"
+  type 'a elt = 'a
+end)
+
+let to_array t = t

@@ -13,7 +13,7 @@ let get = function Some v -> v | None -> invalid_arg "get: option is None"
 
 let bind o f = match o with None -> None | Some v -> f v
 
-(* let join = function Some o -> o | None -> None *)
+let join = function Some o -> o | None -> None
 
 let map f o = match o with None -> None | Some v -> Some (f v)
 

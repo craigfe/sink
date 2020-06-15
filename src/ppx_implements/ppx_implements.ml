@@ -24,11 +24,26 @@ open Ppxlib
 (** The [@@implements ...] attribute consumes a tuple of module type names
     (which are actually [Pexp_construct]s, but the user doesn't need to know
     that...). *)
+
+let get_interface_substitutions ~loc = function
+  | None -> []
+  | Some
+      [%expr
+        {
+          subst =
+            ( [%e? { pexp_desc = Pexp_ident { txt = Lident inner; _ }; _ }],
+              [%e? { pexp_desc = Pexp_ident { txt = Lident outer; _ }; _ }] );
+        }] ->
+      [ (inner, outer) ]
+  | Some e ->
+      Location.raise_errorf ~loc "Unsupported payload type for `implements`: %a"
+        Pprintast.expression e
+
 let implements =
   Attribute.declare "implements" Attribute.Context.Type_declaration
     Ast_pattern.(pstr __')
-    (fun payload ->
-      match payload.txt with
+    (fun { txt; loc } ->
+      match txt with
       | [
        {
          pstr_desc =
@@ -36,7 +51,7 @@ let implements =
          _;
        };
       ] ->
-          [ interface.txt ]
+          [ (interface.txt, []) ]
       | [
        {
          pstr_desc = Pstr_eval ({ pexp_desc = Pexp_tuple interfaces; _ }, _);
@@ -45,20 +60,26 @@ let implements =
       ] ->
           interfaces
           |> List.map (function
-               | { pexp_desc = Pexp_construct ({ txt = name; _ }, None); _ } ->
-                   name
+               | { pexp_desc = Pexp_construct ({ txt = name; _ }, args); _ } ->
+                   (name, get_interface_substitutions ~loc args)
                | item ->
-                   Location.raise_errorf ~loc:payload.loc
+                   Location.raise_errorf ~loc
                      "Unsupported payload type for `implements`: %a"
                      Pprintast.expression item)
       | _ ->
-          Location.raise_errorf ~loc:payload.loc
+          Location.raise_errorf ~loc
             "`implements' payload must contain a single tuple. Unsupported \
              payload: %a"
-            Pprintast.structure payload.txt)
+            Pprintast.structure txt)
+
+let boring_type (module A : Ast_builder.S) ~name =
+  let open A in
+  type_declaration ~name:(Located.mk name) ~params:[] ~cstrs:[] ~private_:Public
+    ~kind:Ptype_abstract
+    ~manifest:(Some (ptyp_constr (Located.lident name) []))
 
 (** Similar to [Ppxlib.mk_named_sig]. *)
-let mk_named_sig (module A : Ast_builder.S) ~sg_name =
+let mk_named_sig (module A : Ast_builder.S) ~sg_name ~substitutions =
   let open A in
   let add_closed_attribute incl =
     let attr =
@@ -86,10 +107,15 @@ let mk_named_sig (module A : Ast_builder.S) ~sg_name =
                   (Located.map_lident td.ptype_name)
                   (List.map fst ptype_params)))
       in
+      let with_constraints =
+        substitutions
+        |> List.map (fun (inner, outer) ->
+               Pwith_typesubst
+                 (Located.lident inner, boring_type (module A) ~name:outer))
+        |> List.cons (Pwith_typesubst (Located.lident "t", for_subst))
+      in
       include_infos
-        (pmty_with
-           (pmty_ident (Located.lident mty))
-           [ Pwith_typesubst (Located.lident "t", for_subst) ])
+        (pmty_with (pmty_ident (Located.lident mty)) with_constraints)
       |> add_closed_attribute
       |> psig_include
   | _ -> assert false
@@ -105,10 +131,11 @@ let implements : unit =
                implements
                |> List.filter_map Fun.id
                |> List.flatten
-               |> List.map (fun implement ->
+               |> List.map (fun (implement, substitutions) ->
                       mk_named_sig
                         (module A)
-                        ~sg_name:(Longident.name implement) tdecls))
+                        ~sg_name:(Longident.name implement) ~substitutions
+                        tdecls))
         |> List.flatten)
   in
   Driver.register_transformation "implements" ~rules:[ rule ]

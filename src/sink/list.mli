@@ -2,17 +2,23 @@ open Import
 
 type 'a t = 'a list
 [@@implements
-  Semigroup.S,
+  Monoid.S,
     Eq.S,
     Foldable.S,
+    Zippable.S,
     Functor.S,
     Applicative.S,
     Monad.S,
     Typeable.S,
-    Higher.BRANDED]
+    Higher.BRANDED,
+    Dyn.S]
 
-val is_empty : 'a list -> bool
+val init : int -> (int -> 'a) -> 'a t
 
-val sequence_result : ('a, 'e) result list -> ('a list, 'e) result
+val rev : 'a t -> 'a t
 
-val unzip : ('a * 'b) list -> 'a list * 'b list
+val sequence_result : ('a, 'e) result t -> ('a t, 'e) result
+
+val take_while : ('a -> bool) -> 'a t -> 'a t
+
+val drop_while : ('a -> bool) -> 'a t -> 'a t

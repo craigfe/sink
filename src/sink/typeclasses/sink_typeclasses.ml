@@ -21,20 +21,31 @@ module Export = struct
   module Bounded = Bounded
   (** Types with a minimum and maximum value. *)
 
+  module Enum = Enum
+
   module Num = Num
   (** Numeric types: supporting addition, subtraction, negation and
       multiplication. *)
-
-  module Foldable = Foldable
-  (** Containers that support [fold] operations. *)
 
   module Show = Show
 
   (** {1 Typeclasses for containers / effects} *)
 
+  module Foldable = Foldable
+  (** Containers that support [fold] operations. *)
+
+  module Zippable = Zippable
+  (** Containers that can be [zip]ed and [unzip]ed. *)
+
+  module Hashable = Hashable
+
+  module Blit = Blit
+  (** Containers with a contiguous memory representation. *)
+
   module Functor = Functor
   module Applicative = Applicative
   module Monad = Monad
+  module Proxy = Proxy
 
   (** {1 Higher-kinded polymorphism} *)
 

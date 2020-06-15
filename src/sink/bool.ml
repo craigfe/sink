@@ -15,6 +15,18 @@ let to_float = function false -> 0. | true -> 1.
 
 let to_string = function false -> "false" | true -> "true"
 
+module Forall = struct
+  let empty = true
+
+  let append = ( && )
+end
+
+module Exists = struct
+  let empty = false
+
+  let append = ( || )
+end
+
 module O = Ord.Of_stdlib_compare (B)
 include O
 

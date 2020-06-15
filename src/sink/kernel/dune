@@ -1,0 +1,3 @@
+(library
+ (name sink_kernel)
+ (public_name sink.kernel))

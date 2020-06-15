@@ -8,6 +8,7 @@ doc: "https://CraigFe.github.io/sink/"
 bug-reports: "https://github.com/CraigFe/sink/issues"
 depends: [
   "dune" {>= "2.5"}
+  "sink" {= version}
 ]
 build: [
   ["dune" "subst"] {pinned}

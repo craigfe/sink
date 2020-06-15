@@ -1,7 +1,11 @@
 open Import
 
 type t = int
-[@@implements Show.S, Eq.S, Ord.S, Num.S, Bounded.S, Higher.BRANDED]
+[@@implements Show.S, Eq.S, Ord.S, Num.S, Bounded.S, Higher.BRANDED, Dyn.S]
+
+val eq : int Eq.t
+
+val ord : int Ord.t
 
 module Infix : sig
   include Show.INFIX with type t := t

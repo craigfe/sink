@@ -9,6 +9,10 @@ let maximum = I.max_int
 
 let minimum = I.min_int
 
+let eq = Eq.poly
+
+let ord = Ord.poly
+
 module N : Num.S with type t := t = struct
   let negate = I.neg
 

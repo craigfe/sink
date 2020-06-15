@@ -1,5 +1,19 @@
 include Ord_intf
 
+let of_int_compare compare a b =
+  match compare a b with
+  | n when n < 0 -> Ordering.Lt
+  | n when n > 0 -> Ordering.Gt
+  | _ -> Ordering.Eq
+
+let poly (type a) (Proxy.T : a Proxy.t) : a t =
+  {
+    compare = of_int_compare Stdlib.compare;
+    equal = Stdlib.( = );
+    max = Stdlib.max;
+    min = Stdlib.min;
+  }
+
 module Of_stdlib_compare (X : sig
   type t
 
