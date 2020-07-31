@@ -1,13 +1,10 @@
 open Import
 
 type nonrec +'a node = 'a Stdlib.Seq.node = Nil | Cons of 'a * 'a Stdlib.Seq.t
-
 type nonrec +'a t = 'a Stdlib.Seq.t [@@deriving branded]
 
 let cons x next () = Cons (x, next)
-
 let t _ = failwith "TODO"
-
 let empty () = Nil
 
 let rec append seq1 seq2 () =
@@ -44,23 +41,62 @@ module Monad_instance = struct
     | Cons (x, next) -> Cons (x, flat_map_app f next tail)
 
   let kliesli f g x = bind (f x) g
-
   let join t = Stdlib.Seq.flat_map Fun.id t
 end
 
 include (Monad_instance : Monad.S1 with type 'a t := 'a t)
-
 include Applicative.Of_monad (Monad_instance)
 
-let fold_left f acc seq =
-  let rec aux f acc seq =
-    match seq () with
-    | Nil -> acc
-    | Cons (x, next) ->
-        let acc = f acc x in
-        aux f acc next
-  in
-  aux f acc seq
+module Left_assoc = struct
+  type nonrec ('a, 'p) t = 'a t
+  type 'a elt = 'a
+  type index = int
+
+  let fold_left f =
+    let rec aux acc seq =
+      match seq () with
+      | Nil -> acc
+      | Cons (x, next) ->
+          let acc = f acc x in
+          aux acc next
+    in
+    aux
+
+  let fold_lefti f =
+    let rec aux i acc seq =
+      match seq () with
+      | Nil -> acc
+      | Cons (x, next) ->
+          let acc = f i acc x in
+          aux (i + 1) acc next
+    in
+    aux 0
+
+  let fold_until f =
+    let rec aux acc t =
+      match t () with
+      | Nil -> Left acc
+      | Cons (x, next) -> (
+          match f acc x with Left acc -> aux acc next | Right _ as r -> r )
+    in
+    aux
+
+  let fold_untili f =
+    let rec aux i acc t =
+      match t () with
+      | Nil -> Left acc
+      | Cons (x, next) -> (
+          match f i acc x with
+          | Left acc -> aux (i + 1) acc next
+          | Right _ as r -> r )
+    in
+    aux 0
+
+  let decons seq =
+    match seq () with Nil -> None | Cons (x, next) -> Some (x, next)
+end
+
+include Foldable.Of_left_assoc (Left_assoc)
 
 let rec filter_map f seq () =
   match seq () with
@@ -87,10 +123,3 @@ let iter f seq =
 
 let rec unfold f u () =
   match f u with None -> Nil | Some (x, u') -> Cons (x, unfold f u')
-
-let rec to_list seq =
-  match seq () with Nil -> [] | Cons (x, xf) -> x :: to_list xf
-
-let to_array seq = to_list seq |> Stdlib.Array.of_list
-
-let is_empty seq = match seq () with Nil -> true | Cons (_, _) -> false

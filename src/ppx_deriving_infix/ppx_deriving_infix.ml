@@ -7,7 +7,6 @@ open Ppxlib
         type t
 
         val foo : t -> int
-
         val bar : t -> int -> t [@@infix ( <+> )]
       end
       [@@deriving infix]

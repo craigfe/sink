@@ -9,7 +9,6 @@ module Id = struct
 
   module type T = sig
     type a
-
     type _ w += W : a w
   end
 
@@ -23,7 +22,6 @@ module Id = struct
   let create (type a) () =
     ( ( module struct
         type nonrec a = a
-
         type _ w += W : a w
       end )
       : a t )

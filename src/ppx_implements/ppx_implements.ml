@@ -90,8 +90,7 @@ let mk_named_sig (module A : Ast_builder.S) ~sg_name ~substitutions =
   in
   function
   | [
-      ( { ptype_name = { txt = "t"; _ }; ptype_cstrs = []; ptype_params; _ } as
-      td );
+      ({ ptype_name = { txt = _; _ }; ptype_cstrs = []; ptype_params; _ } as td);
     ] ->
       let arity = List.length ptype_params in
       let mty =
@@ -118,7 +117,16 @@ let mk_named_sig (module A : Ast_builder.S) ~sg_name ~substitutions =
         (pmty_with (pmty_ident (Located.lident mty)) with_constraints)
       |> add_closed_attribute
       |> psig_include
-  | _ -> assert false
+  | _tdecls -> Location.raise_errorf ~loc "Unsupported"
+
+(** Inlined from OCaml for pre-4.08.0 compatibility *)
+let filter_map f =
+  let rec aux accu = function
+    | [] -> List.rev accu
+    | x :: l -> (
+        match f x with None -> aux accu l | Some v -> aux (v :: accu) l )
+  in
+  aux []
 
 let implements : unit =
   let rule =

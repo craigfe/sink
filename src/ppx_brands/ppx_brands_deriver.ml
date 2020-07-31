@@ -4,6 +4,7 @@ let expand_type_decl ~loc ~path:_ (_recflag, tdecls) =
   let (module A) = Ast_builder.make loc in
   let open A in
   let tdecl = List.hd tdecls in
+  let tdecl = name_type_params_in_td tdecl in
   let params = tdecl.ptype_params in
   let newtype_suffix =
     match List.length params with 0 -> "" | n -> string_of_int n

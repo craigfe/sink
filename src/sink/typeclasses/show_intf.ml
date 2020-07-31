@@ -13,8 +13,6 @@ module type Show = sig
   type nonrec 't t = 't t
 
   module type S = S
-
   module type S1 = S1
-
   module type INFIX = INFIX
 end

@@ -1,6 +1,7 @@
 open Import
 
 type _ t =
+  | Empty : empty t
   | Unit : unit t
   | Int : int t
   | Int32 : int32 t
@@ -18,33 +19,19 @@ type _ t =
 [@@deriving branded]
 
 let t t = Repr t
-
+let empty = Empty
 let unit = Unit
-
 let int = Int
-
 let int32 = Int32
-
 let bool = Bool
-
 let char = Char
-
 let string = String
-
 let bytes = Bytes
-
 let float = Float
-
 let option a = Option a
-
 let list a = List a
-
 let array a = Array a
-
 let lazy_ a = Lazy a
-
 let pair a b = Pair (a, b)
-
 let to_string = assert false
-
 let equal = assert false

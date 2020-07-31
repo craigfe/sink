@@ -14,15 +14,9 @@ type nonrec 'a t = 'a Stdlib.Seq.t
     Higher.BRANDED]
 
 val empty : unit -> 'a node
-
 val cons : 'a -> 'a t -> unit -> 'a node
-
 val filter_map : ('a -> 'b option) -> 'a t -> 'b t
-
 val filter : ('a -> bool) -> 'a t -> 'a t
-
 val fold_left : ('a -> 'b -> 'a) -> 'a -> 'b t -> 'a
-
 val iter : ('a -> unit) -> 'a t -> unit
-
 val unfold : ('a -> ('b * 'a) option) -> 'a -> 'b t

@@ -8,7 +8,6 @@ module Located (A : Ast_builder.S) : S = struct
   open A
 
   let higher x = Ldot (lident "Higher", x)
-
   let type_apply f a = ptyp_constr (Located.mk (higher "app")) [ a; f ]
 
   let inject_type_operators typ =
@@ -36,13 +35,14 @@ module Located (A : Ast_builder.S) : S = struct
     |> fst
 end
 
-let type_rule =
-  Extension.declare "b" Extension.Context.Core_type
-    Ast_pattern.(__)
-    (fun ~loc ~path:_ ->
-      let (module A) = Ast_builder.make loc in
-      let (module L) = (module Located (A) : S) in
-      function PTyp t -> L.inject_type_operators t | _ -> failwith "invalid")
-  |> Context_free.Rule.extension
-
-let () = Driver.register_transformation ~rules:[ type_rule ] "b"
+let () =
+  let rule =
+    Extension.declare "b" Extension.Context.Core_type
+      Ast_pattern.(__)
+      (fun ~loc ~path:_ ->
+        let (module A) = Ast_builder.make loc in
+        let (module L) = (module Located (A) : S) in
+        function PTyp t -> L.inject_type_operators t | _ -> failwith "invalid")
+    |> Context_free.Rule.extension
+  in
+  Driver.register_transformation ~rules:[ rule ] "b"

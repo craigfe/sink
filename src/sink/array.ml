@@ -3,6 +3,7 @@ module A = Stdlib.Array
 
 module T = struct
   type 'a t = 'a array [@@deriving branded]
+  type 'a elt = 'a
 
   (* let forall2_exn f t1 t2 =
    *   let len = A.length t1 in
@@ -13,34 +14,20 @@ module T = struct
    *   inner (len - 1) *)
 
   let combine = A.append
-
   let get = A.get
-
-  let fold (type m) (m : m Monoid.t) = A.fold_left m.append m.empty
-
   let length = A.length
-
-  let minimum _ = failwith "TODO"
-
-  let blit = A.blit
-
-  let t _ = failwith "TODO"
-
+  let t = Repr.array
   let init = A.init
-
-  let to_list = A.to_list
-
-  let to_array t = t
-
-  let iter = A.iter
+  let map = A.map
 end
 
 include T
+include Foldable.Of_indexable (T)
+include Zippable.Of_indexable (T)
 
-include Foldable.Of_indexed (struct
-  include T
-
-  type 'a elt = 'a
-end)
-
+let blit ~src ~src_pos ~dst ~dst_pos ~len = A.blit src src_pos dst dst_pos len
+let to_dyn = Dyn.Encoder.array
+let to_list = A.to_list
 let to_array t = t
+let zip _ = failwith "TODO"
+let unzip _ = failwith "TODO"

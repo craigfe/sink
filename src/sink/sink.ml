@@ -6,16 +6,17 @@ include Toplevel
     Utility modules for basic types, many of which shadow similar ones from the
     OCaml standard library. *)
 
+module Unit = Unit
 module Bool = Bool
-module Either = Either
 module Int = Int
 module Int32 = Int32
 module Int64 = Int64
-module Unit = Unit
-module Option = Option
 module Fun = Fun
+module Either = Either
+module Option = Option
 module Result = Result
 module Ordering = Sink_typeclasses.Ordering
+module Empty = Empty
 
 (** Module types [T], [T1], [T2] ... etc. just wrap a single type [t] with an
     increasing number of type parameters. We export them into the global
@@ -31,8 +32,13 @@ include T
 module Seq = Seq
 module List = List
 module Array = Array
-module Hashtbl = Hashtbl
 module Set = Set
+
+(** {2 Association containers} *)
+
+module Assoc = Sink_typeclasses.Assoc
+module Hashtbl = Hashtbl
+module Map = Map
 
 include Sink_typeclasses.Export
 (** @inline *)

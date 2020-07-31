@@ -12,3 +12,4 @@ type 'a t = 'a array
     Dyn.S]
 
 val init : int -> (int -> 'a) -> 'a t
+val to_array : 'a t -> 'a t

@@ -50,8 +50,10 @@ module Export = struct
   (** {1 Higher-kinded polymorphism} *)
 
   module Higher = Higher
+  module Reifier = Reifier
 end
 
 include Export
 module Ordering = Ordering
+module Assoc = Assoc
 module T = T

@@ -1,1 +1,1 @@
-type 'a t = T
+type _ t = T

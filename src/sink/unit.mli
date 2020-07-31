@@ -5,6 +5,5 @@ type t = unit
 
 module Infix : sig
   include Eq.INFIX with type t := t
-
   include Ord.INFIX with type t := t
 end

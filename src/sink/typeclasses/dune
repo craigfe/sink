@@ -3,4 +3,5 @@
  (public_name sink.typeclasses)
  (libraries sink.kernel)
  (preprocess
-  (pps ppx_deriving_typeclass ppx_deriving_infix ppx_deriving_phantom ppx_brands.rewriter)))
+  (pps ppx_deriving_typeclass ppx_implements ppx_deriving_infix
+    ppx_deriving_phantom ppx_brands.rewriter)))

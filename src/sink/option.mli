@@ -14,7 +14,5 @@ val get : 'a t -> 'a
     @raise Invalid_argument if the argument is [None]. *)
 
 val to_result : none:'b -> 'a t -> ('a, 'b) Result.t
-
 val to_list : 'a t -> 'a List.t
-
 val to_seq : 'a t -> 'a Seq.t

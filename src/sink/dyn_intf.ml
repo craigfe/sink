@@ -1,3 +1,5 @@
+open Import
+
 type dyn =
   | Opaque
   | Unit
@@ -10,6 +12,8 @@ type dyn =
   | Char of char
   | Float of float
   | Option of dyn option
+  | Either of (dyn, dyn) either
+  | Result of (dyn, dyn) result
   | List of dyn list
   | Array of dyn array
   | Tuple of dyn list
@@ -17,7 +21,6 @@ type dyn =
   | Variant of string * dyn list
   | Map of (dyn * dyn) list
   | Set of dyn list
-[@@implements Hashable.S]
 
 module type S = sig
   type t
@@ -28,50 +31,26 @@ end
 module type S1 = sig
   type 'a t
 
-  val to_dyn : dyn t -> dyn
+  val to_dyn : ('a -> dyn) -> 'a t -> dyn
 end
 
 module type Dyn = sig
-  type t = dyn
+  type t = dyn [@@implements Hashable.S]
 
   module Encoder : sig
     type dyn
-
     type 'a t = 'a -> dyn
 
-    val unit : unit t
-
-    val char : char t
-
-    val string : string t
-
-    val int : int t
-
-    val float : float t
-
-    val bool : bool t
-
-    val pair : 'a t -> 'b t -> ('a * 'b) t
-
-    val triple : 'a t -> 'b t -> 'c t -> ('a * 'b * 'c) t
-
-    val list : 'a t -> 'a list t
-
-    val array : 'a t -> 'a array t
-
-    val option : 'a t -> 'a option t
+    include Reifier.S with type 'a t := 'a t
+    (** @inline *)
 
     val record : (string * dyn) list -> dyn
-
     val unknown : _ t
-
     val opaque : _ t
-
     val constr : string -> dyn list -> dyn
   end
   with type dyn := t
 
   module type S = S
-
   module type S1 = S1
 end

@@ -1,15 +1,29 @@
+module type Generic = sig
+  type (+'a, 'p) t
+
+  val return : 'a -> ('a, 'p) t
+  val bind : ('a, 'p) t -> ('a -> ('b, 'p) t) -> ('b, 'p) t [@@infix ( >>= )]
+
+  val kliesli : ('a -> ('b, 'p) t) -> ('b -> ('c, 'p) t) -> 'a -> ('c, 'p) t
+    [@@infix ( >=> )]
+
+  val join : (('a, 'p) t, 'p) t -> ('a, 'p) t
+end
+[@@deriving typeclass, infix]
+
 module type S1 = sig
   type +'a t
 
-  val return : 'a -> 'a t
-
-  val bind : 'a t -> ('a -> 'b t) -> 'b t [@@infix ( >>= )]
-
-  val kliesli : ('a -> 'b t) -> ('b -> 'c t) -> 'a -> 'c t [@@infix ( >=> )]
-
-  val join : 'a t t -> 'a t
+  include Generic with type ('a, _) t := 'a t
+  (** @inline *)
 end
-[@@deriving typeclass, infix, phantom { subderiving = infix }]
+
+module type S2 = sig
+  type (+'a, 'p) t
+
+  include Generic with type ('a, 'p) t := ('a, 'p) t
+  (** @inline *)
+end
 
 module type Syntax = sig
   type +'a t
@@ -45,14 +59,11 @@ end
 module type Reader_open = sig
   type (+'a, +'e) t
 
-  include S2 with type ('a, 'e) t := ('a, 'e) t
+  include Generic with type ('a, 'e) t := ('a, 'e) t
 
   val run : ('a, 'e) t -> 'e -> 'a
-
   val ask : ('e, 'e) t
-
   val asks : ('e -> 'a) -> ('a, 'e) t
-
   val local : ('e -> 'e) -> ('a, 'e) t -> ('a, 'e) t
 end
 
@@ -82,16 +93,12 @@ end
 module type Writer_open = sig
   type (+'a, -'w) t
 
-  include S2 with type ('a, 'w) t := ('a, 'w) t
+  include Generic with type ('a, 'w) t := ('a, 'w) t
 
   val tell : 'w -> (unit, 'w) t
-
   val listen : ('a, 'w) t -> ('a, 'w) t
-
   val run : ('a, 'w) t -> 'a * 'w
-
   val exec : ('a, 'w) t -> 'w
-
   val writer : 'a -> 'w -> ('a, 'w) t
 end
 
@@ -102,6 +109,8 @@ module type State = sig
   (** The type of state underlying state actions. *)
 end
 
+module type INFIX1 = INFIX
+
 module type Monad = sig
   (** Monads must satisfy the following three laws:
 
@@ -111,14 +120,10 @@ module type Monad = sig
 
   type nonrec 'a t = 'a t
 
+  module type Generic = Generic
   module type S1 = S1
-
   module type S2 = S2
-
-  module type INFIX1 = INFIX1
-
-  module type INFIX2 = INFIX2
-
+  module type INFIX1 = INFIX
   module type Syntax = Syntax
 
   (** {1 Standard monad instances} *)

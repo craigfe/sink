@@ -1,1 +1,2 @@
+include Sink_kernel
 include Sink_typeclasses
