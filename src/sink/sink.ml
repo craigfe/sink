@@ -12,6 +12,7 @@ module Int = Int
 module Int32 = Int32
 module Int64 = Int64
 module Fun = Fun
+module Pair = Pair
 module Either = Either
 module Option = Option
 module Result = Result

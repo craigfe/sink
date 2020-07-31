@@ -1,4 +1,4 @@
-module type S = sig
+module type Generic = sig
   type ('k, 'v) t
   type 'k key
   type 'v value
@@ -15,7 +15,7 @@ module type S = sig
   end
 end
 
-module type Functional = sig
+module type Generic_functional = sig
   type ('k, 'v) t
   type 'k key
   type 'v value
@@ -24,7 +24,7 @@ module type Functional = sig
 
   (** @inline *)
   include
-    S
+    Generic
       with type ('k, 'v) t := ('k, 'v) t
        and type 'k key := 'k key
        and type 'v value := 'v value
@@ -33,7 +33,12 @@ module type Functional = sig
   val update : 'k key -> ('v option -> 'v option) -> ('k, 'v) t -> ('k, 'v) t
 end
 
-module type Mutable = sig
+module type F2 = sig
+  (** @inline *)
+  include Generic with type 'k key := 'k and type 'v value := 'v
+end
+
+module type Generic_mutable = sig
   type ('k, 'v) t
   type 'k key
   type 'v value
@@ -42,7 +47,7 @@ module type Mutable = sig
 
   (** @inline *)
   include
-    S
+    Generic
       with type ('k, 'v) t := ('k, 'v) t
        and type 'k key := 'k key
        and type 'v value := 'v value

@@ -1,4 +1,6 @@
 (library
  (name sink_lwt)
  (public_name sink-lwt)
- (libraries lwt))
+ (libraries lwt lwt.unix sink)
+ (flags
+  (:standard -open Sink)))

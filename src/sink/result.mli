@@ -1,7 +1,7 @@
 open Import
 
 type ('a, 'e) t = ('a, 'e) result
-[@@implements Higher.BRANDED, Functor.S, Monad.S]
+[@@implements Functor.S, Monad.S, Higher.BRANDED]
 
 val errorf :
   ('a, Format.formatter, unit, ('b, [> `Msg of string ]) t) format4 -> 'a

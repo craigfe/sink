@@ -34,6 +34,9 @@ module Export = struct
   module Foldable = Foldable
   (** Containers that support [fold] operations. *)
 
+  module Filterable = Filterable
+  (** Containers that support [filter] operations. *)
+
   module Zippable = Zippable
   (** Containers that can be [zip]ed and [unzip]ed. *)
 

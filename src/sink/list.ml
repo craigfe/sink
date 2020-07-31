@@ -6,10 +6,13 @@ module T = struct
   type 'a elt = 'a
   type index = int
 
+  let hd_exn = L.hd
+  let nth = L.nth_opt
+  let nth_exn = L.nth
   let t = Repr.list
   let to_dyn = Dyn.Encoder.list
   let empty = []
-  let append = L.append
+  let append a b = match (a, b) with x, [] | [], x -> x | a, b -> L.append a b
   let decons = function [] -> None | x :: xs -> Some (x, xs)
 
   let equal (type e) (eq : e Eq.t) xs ys =
@@ -77,6 +80,16 @@ module T = struct
     in
     inner [] list
 
+  let distrib_result l =
+    fold_right
+      (fun a b ->
+        match (a, b) with
+        | Ok o, Ok acc -> Ok (o :: acc)
+        | Ok _, Error e -> Error e
+        | Error e, Error acc -> Error (e :: acc)
+        | Error e, Ok _ -> Error [ e ])
+      l (Ok [])
+
   let rec zip xs ys =
     match (xs, ys) with x :: xs, y :: ys -> (x, y) :: zip xs ys | _, _ -> []
 
@@ -116,6 +129,36 @@ module T = struct
     aux []
 
   let rec drop_while p = function x :: xs when p x -> drop_while p xs | l -> l
+
+  let filteri p =
+    let rec aux i = function
+      | [] -> []
+      | x :: xs -> (
+          match p i x with
+          | true -> x :: aux (i + 1) xs
+          | false -> aux (i + 1) xs )
+    in
+    aux 0
+
+  let filter f = filteri (fun _ -> f)
+
+  let filter_mapi f =
+    let rec aux i = function
+      | [] -> []
+      | x :: xs -> (
+          match f i x with
+          | Some y -> y :: aux (i + 1) xs
+          | None -> aux (i + 1) xs )
+    in
+    aux 0
+
+  let filter_map f = filter_mapi (fun _ -> f)
+
+  module Assoc = struct
+    type ('a, 'b) t = ('a * 'b) list
+
+    let inverse t = map Pair.flip t
+  end
 end
 
 include Foldable.Of_left_assoc (struct

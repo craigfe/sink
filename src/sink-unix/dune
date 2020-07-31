@@ -1,4 +1,6 @@
 (library
  (name sink_unix)
  (public_name sink-unix)
- (libraries unix))
+ (libraries unix sink)
+ (flags
+  (:standard -open Sink)))
