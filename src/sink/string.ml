@@ -31,3 +31,8 @@ end)
 
 let blit ~src ~src_pos ~dst ~dst_pos ~len =
   S.blit src src_pos (Stdlib.Bytes.unsafe_of_string dst) dst_pos len
+
+let to_list x = Stdlib.String.to_seq x |> Stdlib.List.of_seq
+let of_list x = Stdlib.List.to_seq x |> Stdlib.String.of_seq
+let make = S.make
+let split_on = S.split_on_char

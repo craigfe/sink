@@ -19,12 +19,11 @@ module Id = struct
   let equal (type a b) ((module M1) : a t) ((module M2) : b t) =
     match M1.W with M2.W -> true | _ -> false
 
-  let create (type a) () =
-    ( ( module struct
-        type nonrec a = a
-        type _ w += W : a w
-      end )
-      : a t )
+  let create (type a) () : a t =
+    ( module struct
+      type nonrec a = a
+      type _ w += W : a w
+    end )
 
   let same (type a b) ((module M1) : a t) ((module M2) : b t) =
     match M1.W with M2.W -> Some (Refl : (a, b) eq) | _ -> None

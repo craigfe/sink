@@ -16,7 +16,7 @@ let exec cmd =
   match process_status with
   | WEXITED 0 -> Ok lines
   | WEXITED 127 ->
-      Error (`Command_not_found (String.split_on_char ' ' cmd |> List.hd_exn))
+      Error (`Command_not_found (String.split_on ' ' cmd |> List.hd_exn))
   | WEXITED n -> Result.errorf "Command \"%s\" failed with return code %d" cmd n
   | WSIGNALED _ | WSTOPPED _ ->
       Result.errorf "Command \"%s\" was interrupted" cmd

@@ -40,6 +40,7 @@ module Export = struct
   module Zippable = Zippable
   (** Containers that can be [zip]ed and [unzip]ed. *)
 
+  module Indexable = Indexable
   module Hashable = Hashable
 
   module Blit = Blit

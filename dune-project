@@ -1,6 +1,8 @@
 (lang dune 2.5.1)
 (name sink)
 
+(using cinaps 1.0)
+
 (generate_opam_files true)
 (source (github CraigFe/sink))
 (maintainers "Craig Ferguson <me@craigfe.io>")
@@ -16,7 +18,9 @@
   (ppx_deriving_typeclass (= :version))
   (ppx_deriving_phantom (= :version))
   (ppx_implements (= :version))
-  (alcotest (and (>= 1.0.0) :with-test))))
+  (alcotest (and (>= 1.0.0) :with-test))
+  (cinaps :with-test)
+  (ocamlformat (and (= 0.15.0) :with-test))))
 
 (package
  (name sink-unix)
@@ -30,7 +34,8 @@
  (synopsis "Lwt-specific standard library replacement.")
  (documentation https://CraigFe.github.io/sink/)
  (depends
-  (sink (= :version))))
+  (sink (= :version))
+  lwt))
 
 ;; PPXes used in the implementation of Sink
 

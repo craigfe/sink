@@ -31,7 +31,8 @@ module Located (A : Ast_builder.S) : S = struct
              (t, vars @ acc)
          | _ -> (t, acc)
     end)
-      #core_type typ []
+      #core_type
+      typ []
     |> fst
 end
 

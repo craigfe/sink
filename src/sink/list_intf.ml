@@ -22,6 +22,7 @@ module type List = sig
   val nth_exn : 'a t -> int -> 'a
   val init : int -> (int -> 'a) -> 'a t
   val rev : 'a t -> 'a t
+  val rev_append : 'a t -> 'a t -> 'a t
   val sum : int t -> int
   val product : int t -> int
   val sequence_result : ('a, 'e) result t -> ('a t, 'e) result
@@ -29,6 +30,7 @@ module type List = sig
   val take_while : ('a -> bool) -> 'a t -> 'a t
   val drop_while : ('a -> bool) -> 'a t -> 'a t
   val to_array : 'a t -> 'a array
+  val of_array : 'a array -> 'a t
 
   module Assoc : sig
     type ('a, 'b) t = ('a * 'b) list

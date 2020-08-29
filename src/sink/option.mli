@@ -3,7 +3,7 @@ open Import
 type 'a t = 'a option
 [@@implements Eq.S, Ord.S, Functor.S, Applicative.S, Monad.S, Higher.BRANDED]
 
-val none : 'a t
+val none : _ t
 
 val some : 'a -> 'a t
 (** See also {!pure}. *)

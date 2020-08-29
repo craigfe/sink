@@ -119,6 +119,7 @@ module T = struct
 
   let partition p = partition_map (fun x -> if p x then Left x else Right x)
   let rev = L.rev
+  let rev_append = L.rev_append
 
   let take_while p =
     let rec aux acc = function
@@ -157,7 +158,7 @@ module T = struct
   module Assoc = struct
     type ('a, 'b) t = ('a * 'b) list
 
-    let inverse t = map Pair.flip t
+    let inverse t = map (fun (a, b) -> (b, a)) t
   end
 end
 
@@ -168,3 +169,5 @@ include Foldable.Of_left_assoc (struct
 end)
 
 include T
+
+let of_array = Stdlib.Array.to_list

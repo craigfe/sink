@@ -5,3 +5,16 @@ module type General = sig
   val length : 'a t -> int
   val get : 'a t -> int -> 'a elt
 end
+
+module type S = sig
+  type t
+  type elt
+
+  include General with type _ t := t and type _ elt := elt
+end
+
+module type S1 = sig
+  type 'a t
+
+  include General with type 'a t := 'a t and type 'a elt := 'a
+end

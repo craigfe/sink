@@ -12,12 +12,17 @@ module Int = Int
 module Int32 = Int32
 module Int64 = Int64
 module Fun = Fun
-module Pair = Pair
 module Either = Either
 module Option = Option
 module Result = Result
 module Ordering = Sink_typeclasses.Ordering
 module Empty = Empty
+module Char = Char
+module String = String
+module Bytes = Bytes
+module Tuple = Tuple
+module Pair = Tuple.T2
+module Triple = Tuple.T3
 
 (** Module types [T], [T1], [T2] ... etc. just wrap a single type [t] with an
     increasing number of type parameters. We export them into the global

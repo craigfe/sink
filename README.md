@@ -1,5 +1,7 @@
 # Sink – everything and the kitchen sink
 
+<p align="center">(under development)</p>
+
 An OCaml standard library replacement intended for personal use in other
 projects. Explores some design space not seen in other OCaml standard libraries.
 
@@ -15,8 +17,6 @@ __Should I use it?__ Almost certainly not.
 - __Consistent interfaces__. Very similar to the approach taken in [base], type
   interfaces are constructed using a combination of functors and PPX to ensure
   consistency.
-
-- __Type-class dictionaries__.
 
 - __Higher-kinded polymorphism via [brands][yallop14]__. All higher-kinded types
   `'a t` come alongside a corresponding _brand_ `br` that can be used to
@@ -45,6 +45,11 @@ __Should I use it?__ Almost certainly not.
 | Function-level | `kliesli`  | `( >=> )`    | —              |
 
 - __Composable error values__.
+
+- __Different datastructure views belong in different namespaces__. For
+  instance, viewing an `'a array array` as a _matrix_ (or `('k * 'v) list` as an
+  association list) belongs in a different namespace from the main datastructure
+  (e.g. `Array.Matrix` or `List.Assoc` respecitvely).
 
 - __Dependencies à la carte__. OCaml library developers have limited solutions
   for isolating their users from library dependency choices. (At time of

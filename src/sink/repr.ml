@@ -33,5 +33,5 @@ let list a = List a
 let array a = Array a
 let lazy_ a = Lazy a
 let pair a b = Pair (a, b)
-let to_string = assert false
-let equal = assert false
+let to_string _ = assert false
+let equal _ = assert false
