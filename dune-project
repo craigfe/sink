@@ -44,32 +44,32 @@
  (synopsis "Helper for composing interfaces supported by a type")
  (documentation https://CraigFe.github.io/sink/)
  (depends
-  (ppxlib (= 0.13.0))))
+  (ppxlib (>= 0.14.0))))
 
 (package
  (name ppx_deriving_typeclass)
  (synopsis "Derive first-class equivalents of module types")
  (documentation https://CraigFe.github.io/sink/)
  (depends
-  (ppxlib (= 0.13.0))))
+  (ppxlib (>= 0.14.0))))
 
 (package
  (name ppx_deriving_infix)
  (synopsis "Derive sets of infix operators from module types")
  (documentation https://CraigFe.github.io/sink/)
  (depends
-  (ppxlib (= 0.13.0))))
+  (ppxlib (>= 0.14.0))))
 
 (package
  (name ppx_brands)
  (synopsis "Derive type brands for higher-kinded polymorphism")
  (documentation https://CraigFe.github.io/sink/)
  (depends
-  (ppxlib (= 0.13.0))))
+  (ppxlib (>= 0.14.0))))
 
 (package
  (name ppx_deriving_phantom)
  (synopsis "Clone a module type with extra phantom type parameters")
  (documentation https://CraigFe.github.io/sink/)
  (depends
-  (ppxlib (= 0.13.0))))
+  (ppxlib (>= 0.14.0))))
