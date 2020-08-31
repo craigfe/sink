@@ -15,7 +15,7 @@ __Should I use it?__ Almost certainly not.
 <summary>Vague design principles: (click to unfold)</summary>
 
 - __Consistent interfaces__. Very similar to the approach taken in Jane
-  Street's [base][js-base], type interfaces are constructed using a combination
+  Street's [Base][js-base], type interfaces are constructed using a combination
   of functors and PPX to ensure consistency.
 
 - __Higher-kinded polymorphism via [brands][yallop14]__. All higher-kinded types
@@ -28,7 +28,9 @@ __Should I use it?__ Almost certainly not.
   `t` that is a run-time representation of the type. These representations can
   be used to derive operations on the corresponding types, if you're (_a_)
   allergic to boilerplate, (_b_) can't afford a PPX dependency and (_c_) don't
-  care about performance.
+  care about performance. Type representations are implemented in
+  tagless-final style, so it's possible to define one's own generic operations
+  by supplying a new interpreter for the DSL.
 
 - __Function-level programming permitted__. Use of point-free style in OCaml
   code has been somewhat contentious, but I find it useful occasionally.
@@ -43,8 +45,6 @@ __Should I use it?__ Almost certainly not.
 | -------------- |:----------:|:------------:|:--------------:|
 | Value-level    | `bind`     | `( >>= )`    | `( let* )`     |
 | Function-level | `kliesli`  | `( >=> )`    | —              |
-
-- __Composable error values__.
 
 - __Different datastructure views belong in different namespaces__. For
   instance, viewing an `'a array array` as a _matrix_ (or `('k * 'v) list` as an
@@ -72,10 +72,8 @@ library instead. Some non-goals of this project:
   performance (and this library is not about performance). Try
   [`Containers`][containers].
 
-As well as a few minor things:
-
-- All sequencing is _left-to-right_ (e.g. `( *> )` is provided for
-  applicatives but `( <* )` is not).
+All sequencing is _left-to-right_ (e.g. `( *> )` is provided for applicatives
+but `( <* )` is not).
   
 </details>
 

@@ -2,6 +2,10 @@ module B = Stdlib.Bool
 
 type t = bool [@@deriving branded]
 
+let minimum = false
+let maximum = true
+let all = [ false; true ]
+
 external not : bool -> bool = "%boolnot"
 external ( && ) : bool -> bool -> bool = "%sequand"
 external ( || ) : bool -> bool -> bool = "%sequor"

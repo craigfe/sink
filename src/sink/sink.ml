@@ -103,3 +103,4 @@ module Reifier = Reifier
 (** {1 Generic programming} *)
 
 module Repr = Repr
+module Generic = Generic

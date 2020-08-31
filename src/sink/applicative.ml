@@ -17,8 +17,8 @@ module type S1 = sig
   (** @inline *)
 end
 
-module Of_monad (M : Monad.Minimal) : Generic with type ('a, 'p) t := ('a, 'p) M.t =
-struct
+module Of_monad (M : Monad.Minimal) :
+  Generic with type ('a, 'p) t := ('a, 'p) M.t = struct
   open M
 
   let pure = return

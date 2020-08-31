@@ -4,6 +4,7 @@ let t = Repr.unit
 let to_string () = "()"
 let maximum = ()
 let minimum = ()
+let all = [ () ]
 
 module O = Ord.Of_stdlib_compare (struct
   type t = unit

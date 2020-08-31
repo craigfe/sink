@@ -1,5 +1,6 @@
 type t = unit
-[@@implements Bounded.S, Show.S, Eq.S, Ord.S, Typeable.S, Higher.BRANDED]
+[@@implements
+  Show.S, Eq.S, Ord.S, Bounded.S, Enum.S, Typeable.S, Higher.BRANDED]
 
 module Infix : sig
   include Eq.INFIX with type t := t
