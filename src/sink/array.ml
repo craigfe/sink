@@ -26,7 +26,7 @@ include Zippable.Of_indexable (T)
 
 let set = A.set
 let blit ~src ~src_pos ~dst ~dst_pos ~len = A.blit src src_pos dst dst_pos len
-let to_dyn = Dyn.Encoder.array
+let to_dyn = Dyn.Encode.array
 let to_list = A.to_list
 let of_list = A.of_list
 let to_array t = t

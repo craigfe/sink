@@ -31,6 +31,12 @@ module type S = sig
   val lazy_ : 'a t -> 'a Stdlib.Lazy.t t
 end
 
+module type Untyped = sig
+  type t
+
+  include S with type 'a t := t
+end
+
 module type Repr = sig
   module type S = S
   (** This module type defines the structure of the standard OCaml types (for

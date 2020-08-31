@@ -3,7 +3,7 @@ module I = Stdlib.Int
 type t = int [@@deriving branded]
 
 let t = Repr.int
-let to_dyn = Dyn.Encoder.int
+let to_dyn = Dyn.Encode.int
 let to_string = I.to_string
 let maximum = I.max_int
 let minimum = I.min_int
