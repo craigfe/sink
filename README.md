@@ -1,6 +1,6 @@
-# Sink – everything and the kitchen sink
+# `Sink` – everything and the kitchen sink
 
-<p align="center">(under development)</p>
+<p align="center">🚧 <i>Highly unstable and incomplete</i> 🚧</p>
 
 An OCaml standard library replacement intended for personal use in other
 projects. Explores some design space not seen in other OCaml standard libraries.
@@ -14,9 +14,9 @@ __Should I use it?__ Almost certainly not.
 <details>
 <summary>Vague design principles: (click to unfold)</summary>
 
-- __Consistent interfaces__. Very similar to the approach taken in [base], type
-  interfaces are constructed using a combination of functors and PPX to ensure
-  consistency.
+- __Consistent interfaces__. Very similar to the approach taken in Jane
+  Street's [base][js-base], type interfaces are constructed using a combination
+  of functors and PPX to ensure consistency.
 
 - __Higher-kinded polymorphism via [brands][yallop14]__. All higher-kinded types
   `'a t` come alongside a corresponding _brand_ `br` that can be used to
