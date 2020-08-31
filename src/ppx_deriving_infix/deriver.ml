@@ -113,10 +113,12 @@ module Located (A : Ast_builder.S) : S = struct
 
     pstr_module
       (module_binding
-         ~name:(Located.mk ("Make_infix" ^ index_suffix))
+         ~name:(Located.mk (Some ("Make_infix" ^ index_suffix)))
          ~expr:
-           (pmod_functor (Located.mk "X")
-              (Some (pmty_ident (Located.lident prefix_mtyp_name)))
+           (pmod_functor
+              (Named
+                 ( Located.mk (Some "X"),
+                   pmty_ident (Located.lident prefix_mtyp_name) ))
               ((* pmod_constraint *)
                pmod_structure
                  (t_aliases @ str_items)

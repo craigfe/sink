@@ -7,17 +7,28 @@ module type S = sig
   val empty : empty t
   val unit : unit t
   val bool : bool t
-  val int : int t
-  val int32 : int32 t
   val char : char t
   val string : string t
   val bytes : bytes t
+
+  val int : int t
+  (** Numeric types: *)
+
+  val nativeint : nativeint t
+  val int32 : int32 t
+  val int64 : int64 t
   val float : float t
-  val lazy_ : 'a t -> 'a Stdlib.Lazy.t t
+
+  val pair : 'a t -> 'b t -> ('a * 'b) t
+  (** Container types: *)
+
+  val triple : 'a t -> 'b t -> 'c t -> ('a * 'b * 'c) t
   val option : 'a t -> 'a option t
+  val either : 'a t -> 'b t -> ('a, 'b) either t
+  val result : 'a t -> 'e t -> ('a, 'e) result t
   val list : 'a t -> 'a list t
   val array : 'a t -> 'a array t
-  val pair : 'a t -> 'b t -> ('a * 'b) t
+  val lazy_ : 'a t -> 'a Stdlib.Lazy.t t
 end
 
 module type Repr = sig
