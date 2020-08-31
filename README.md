@@ -1,30 +1,33 @@
 ## `Sink` – everything and the kitchen sink
 
-<p align="center">🚧 <i>Highly unstable and incomplete</i> 🚧</p>
+<p align="center">🚧&nbsp;&nbsp;&nbsp;<b><i>Highly unstable and incomplete</i></b>&nbsp;&nbsp;&nbsp;🚧</p>
 
-An OCaml standard library replacement intended for personal use in other
-projects. Explores some design space not seen in other OCaml standard libraries.
+> _An OCaml standard library replacement intended for personal use in other
+> projects. Explores some design space not seen in other OCaml standard
+> libraries._
 
-__Can I use it?__ Of course.
+![Photograph of a kitchen sink](.meta/sink.jpg)
 
-__Should I use it?__ Almost certainly not.
+**Can I use it?** Of course.
+
+**Should I use it?** Almost certainly not.
 
 <hr/>
 
 <details>
 <summary>Vague design principles: (click to unfold)</summary>
 
-- __Consistent interfaces__. Very similar to the approach taken in Jane
+- **Consistent interfaces**. Very similar to the approach taken in Jane
   Street's [Base][js-base], type interfaces are constructed using a combination
   of functors and PPX to ensure consistency.
 
-- __Higher-kinded polymorphism via [brands][yallop14]__. All higher-kinded types
+- **Higher-kinded polymorphism via [brands][yallop14]**. All higher-kinded types
   `'a t` come alongside a corresponding _brand_ `br` that can be used to
   specialise functions that are polymorphic over _all_ higher-kinded types. With
   some squinting, this enables an OCaml equivalent of the standard Haskell
   typeclass hierarchy (`Monoid`, `Semigroup`, `Functor`, `Monad` etc.).
 
-- __Generic programming__. All higher-kinded types `t` come alonside a _value_
+- **Generic programming**. All higher-kinded types `t` come alonside a _value_
   `t` that is a run-time representation of the type. These representations can
   be used to derive operations on the corresponding types, if you're (_a_)
   allergic to boilerplate, (_b_) can't afford a PPX dependency and (_c_) don't
@@ -32,26 +35,25 @@ __Should I use it?__ Almost certainly not.
   tagless-final style, so it's possible to define one's own generic operations
   by supplying a new interpreter for the DSL.
 
-- __Function-level programming permitted__. Use of point-free style in OCaml
+- **Function-level programming permitted**. Use of point-free style in OCaml
   code has been somewhat contentious, but I find it useful occasionally.
   Function composition is provided as `( >> )`, function-level monadic
   composition as `( >=> )` etc.
-  
-- __Name-spaced operators__. Some modules provide `Infix` and `Syntax`
+- **Name-spaced operators**. Some modules provide `Infix` and `Syntax`
   submodules that are intended to be opened either locally or globally. For
   instance, there are many ways to get at the `bind` operation on lists:
 
-|                | `List`     | `List.Infix` | `List.Syntax`  |
-| -------------- |:----------:|:------------:|:--------------:|
-| Value-level    | `bind`     | `( >>= )`    | `( let* )`     |
-| Function-level | `kliesli`  | `( >=> )`    | —              |
+|                |  `List`   | `List.Infix` | `List.Syntax` |
+| -------------- | :-------: | :----------: | :-----------: |
+| Value-level    |  `bind`   |  `( >>= )`   |  `( let* )`   |
+| Function-level | `kliesli` |  `( >=> )`   |       —       |
 
-- __Different datastructure views belong in different namespaces__. For
+- **Different datastructure views belong in different namespaces**. For
   instance, viewing an `'a array array` as a _matrix_ (or `('k * 'v) list` as an
   association list) belongs in a different namespace from the main datastructure
   (e.g. `Array.Matrix` or `List.Assoc` respecitvely).
 
-- __Dependencies à la carte__. OCaml library developers have limited solutions
+- **Dependencies à la carte**. OCaml library developers have limited solutions
   for isolating their users from library dependency choices. (At time of
   writing, my system contains 38 Opam switches with transitive dependencies on
   [`Base`][js-base].) For lack of a better solution, Sink is intended to be
@@ -64,17 +66,17 @@ __Should I use it?__ Almost certainly not.
 If you don't care about any of the above, you probably want the OCaml standard
 library instead. Some non-goals of this project:
 
-- __~~Speed~~__. e.g. functions over lists are tail-recursive to minimise
+- **~~Speed~~**. e.g. functions over lists are tail-recursive to minimise
   surprisal.
 
-- __~~Exotic data-structures~~__. Ring buffers, indices, B-trees, tries etc. to
+- **~~Exotic data-structures~~**. Ring buffers, indices, B-trees, tries etc. to
   be found elsewhere. If you want one of these, you probably care about its
   performance (and this library is not about performance). Try
   [`Containers`][containers].
 
 All sequencing is _left-to-right_ (e.g. `( *> )` is provided for applicatives
 but `( <* )` is not).
-  
+
 </details>
 
 [yallop14]: https://www.cl.cam.ac.uk/~jdy22/papers/lightweight-higher-kinded-polymorphism.pdf
