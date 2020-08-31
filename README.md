@@ -1,4 +1,4 @@
-# `Sink` – everything and the kitchen sink
+## `Sink` – everything and the kitchen sink
 
 <p align="center">🚧 <i>Highly unstable and incomplete</i> 🚧</p>
 

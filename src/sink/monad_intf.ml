@@ -1,8 +1,16 @@
+module type Minimal = sig
+  type (+'a, 'p) t
+
+  val return : 'a -> ('a, 'p) t
+  val bind : ('a, 'p) t -> ('a -> ('b, 'p) t) -> ('b, 'p) t
+end
+
 module type Generic = sig
   type (+'a, 'p) t
 
   val return : 'a -> ('a, 'p) t
   val bind : ('a, 'p) t -> ('a -> ('b, 'p) t) -> ('b, 'p) t [@@infix ( >>= )]
+  val flat_map : ('a -> ('b, 'p) t) -> ('a, 'p) t -> ('b, 'p) t
 
   val kliesli : ('a -> ('b, 'p) t) -> ('b -> ('c, 'p) t) -> 'a -> ('c, 'p) t
     [@@infix ( >=> )]
@@ -120,11 +128,14 @@ module type Monad = sig
 
   type nonrec 'a t = 'a t
 
+  module type Minimal = Minimal
   module type Generic = Generic
   module type S1 = S1
   module type S2 = S2
   module type INFIX1 = INFIX
   module type Syntax = Syntax
+
+  module Of_minimal (X : Minimal) : Generic with type ('a, 'p) t = ('a, 'p) X.t
 
   (** {1 Standard monad instances} *)
 

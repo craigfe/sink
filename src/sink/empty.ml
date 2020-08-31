@@ -1,4 +1,4 @@
-open Import
+open Sink_kernel
 
 type t = empty = | [@@deriving branded]
 

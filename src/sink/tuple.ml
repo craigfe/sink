@@ -1,5 +1,3 @@
-open Import
-
 (*$
   let alpha i = Char.chr (i + 96)
 
@@ -222,12 +220,12 @@ open Import
   done
 *)
 module T2 : sig
-  type ('a, 'b) t = ('a * 'b[@implements Eq.S])
+  type ('a, 'b) t = 'a * 'b [@implements Eq.S]
 
-  val p1 : ('a, _) t -> 'a
   (** Projecting each component from the tuple: *)
-
+  val p1 : ('a, _) t -> 'a
   val p2 : (_, 'b) t -> 'b
+
   val map : ('a -> 'b) -> ('a, 'a) t -> ('b, 'b) t
   val equal : ord:'a Ord.t -> ('a, 'a) t -> ('a, 'a) t -> bool
   val minimum : ord:'a Ord.t -> ('a, 'a) t -> 'a
@@ -235,19 +233,20 @@ module T2 : sig
   val maximum : ord:'a Ord.t -> ('a, 'a) t -> 'a
   val maximum_on : ord:'b Ord.t -> ('a -> 'b) -> ('a, 'a) t -> 'a
 
-  val first : ('a1 -> 'a2) -> ('a1, 'b) t -> ('a2, 'b) t
   (** Functor instances on each of the components: *)
-
+  val first  : ('a1 -> 'a2) -> ('a1, 'b) t -> ('a2, 'b) t
   val second : ('b1 -> 'b2) -> ('a, 'b1) t -> ('a, 'b2) t
+
 end = struct
   type ('a, 'b) t = 'a * 'b
 
   let p1 (a, _) = a
   let p2 (_, b) = b
-  let map f (a, b) = (f a, f b)
 
+  let map f (a, b) = (f a, f b)
   let equal (type o) ~(ord : o Ord.t) (a1, b1) (a2, b2) =
-    ord.equal a1 a2 && ord.equal b1 b2
+    ord.equal a1 a2
+    && ord.equal b1 b2
 
   let minimum (type o) ~(ord : o Ord.t) (a, b) =
     let acc = ord.min a b in
@@ -265,18 +264,19 @@ end = struct
     let acc = match ord.compare (f a) (f b) with Gt | Eq -> a | Lt -> b in
     acc
 
-  let first f (a, b) = (f a, b)
+
+  let first  f (a, b) = (f a, b)
   let second f (a, b) = (a, f b)
 end
 
 module T3 : sig
-  type ('a, 'b, 'c) t = ('a * 'b * 'c[@implements Eq.S])
+  type ('a, 'b, 'c) t = 'a * 'b * 'c [@implements Eq.S]
 
-  val p1 : ('a, _, _) t -> 'a
   (** Projecting each component from the tuple: *)
-
+  val p1 : ('a, _, _) t -> 'a
   val p2 : (_, 'b, _) t -> 'b
   val p3 : (_, _, 'c) t -> 'c
+
   val map : ('a -> 'b) -> ('a, 'a, 'a) t -> ('b, 'b, 'b) t
   val equal : ord:'a Ord.t -> ('a, 'a, 'a) t -> ('a, 'a, 'a) t -> bool
   val minimum : ord:'a Ord.t -> ('a, 'a, 'a) t -> 'a
@@ -284,21 +284,23 @@ module T3 : sig
   val maximum : ord:'a Ord.t -> ('a, 'a, 'a) t -> 'a
   val maximum_on : ord:'b Ord.t -> ('a -> 'b) -> ('a, 'a, 'a) t -> 'a
 
-  val first : ('a1 -> 'a2) -> ('a1, 'b, 'c) t -> ('a2, 'b, 'c) t
   (** Functor instances on each of the components: *)
-
+  val first  : ('a1 -> 'a2) -> ('a1, 'b, 'c) t -> ('a2, 'b, 'c) t
   val second : ('b1 -> 'b2) -> ('a, 'b1, 'c) t -> ('a, 'b2, 'c) t
-  val third : ('c1 -> 'c2) -> ('a, 'b, 'c1) t -> ('a, 'b, 'c2) t
+  val third  : ('c1 -> 'c2) -> ('a, 'b, 'c1) t -> ('a, 'b, 'c2) t
+
 end = struct
   type ('a, 'b, 'c) t = 'a * 'b * 'c
 
   let p1 (a, _, _) = a
   let p2 (_, b, _) = b
   let p3 (_, _, c) = c
-  let map f (a, b, c) = (f a, f b, f c)
 
+  let map f (a, b, c) = (f a, f b, f c)
   let equal (type o) ~(ord : o Ord.t) (a1, b1, c1) (a2, b2, c2) =
-    ord.equal a1 a2 && ord.equal b1 b2 && ord.equal c1 c2
+    ord.equal a1 a2
+    && ord.equal b1 b2
+    && ord.equal c1 c2
 
   let minimum (type o) ~(ord : o Ord.t) (a, b, c) =
     let acc = ord.min a b in
@@ -320,20 +322,21 @@ end = struct
     let acc = match ord.compare (f acc) (f c) with Gt | Eq -> acc | Lt -> c in
     acc
 
-  let first f (a, b, c) = (f a, b, c)
+
+  let first  f (a, b, c) = (f a, b, c)
   let second f (a, b, c) = (a, f b, c)
-  let third f (a, b, c) = (a, b, f c)
+  let third  f (a, b, c) = (a, b, f c)
 end
 
 module T4 : sig
-  type ('a, 'b, 'c, 'd) t = ('a * 'b * 'c * 'd[@implements Eq.S])
+  type ('a, 'b, 'c, 'd) t = 'a * 'b * 'c * 'd [@implements Eq.S]
 
-  val p1 : ('a, _, _, _) t -> 'a
   (** Projecting each component from the tuple: *)
-
+  val p1 : ('a, _, _, _) t -> 'a
   val p2 : (_, 'b, _, _) t -> 'b
   val p3 : (_, _, 'c, _) t -> 'c
   val p4 : (_, _, _, 'd) t -> 'd
+
   val map : ('a -> 'b) -> ('a, 'a, 'a, 'a) t -> ('b, 'b, 'b, 'b) t
   val equal : ord:'a Ord.t -> ('a, 'a, 'a, 'a) t -> ('a, 'a, 'a, 'a) t -> bool
   val minimum : ord:'a Ord.t -> ('a, 'a, 'a, 'a) t -> 'a
@@ -341,12 +344,12 @@ module T4 : sig
   val maximum : ord:'a Ord.t -> ('a, 'a, 'a, 'a) t -> 'a
   val maximum_on : ord:'b Ord.t -> ('a -> 'b) -> ('a, 'a, 'a, 'a) t -> 'a
 
-  val first : ('a1 -> 'a2) -> ('a1, 'b, 'c, 'd) t -> ('a2, 'b, 'c, 'd) t
   (** Functor instances on each of the components: *)
-
+  val first  : ('a1 -> 'a2) -> ('a1, 'b, 'c, 'd) t -> ('a2, 'b, 'c, 'd) t
   val second : ('b1 -> 'b2) -> ('a, 'b1, 'c, 'd) t -> ('a, 'b2, 'c, 'd) t
-  val third : ('c1 -> 'c2) -> ('a, 'b, 'c1, 'd) t -> ('a, 'b, 'c2, 'd) t
+  val third  : ('c1 -> 'c2) -> ('a, 'b, 'c1, 'd) t -> ('a, 'b, 'c2, 'd) t
   val fourth : ('d1 -> 'd2) -> ('a, 'b, 'c, 'd1) t -> ('a, 'b, 'c, 'd2) t
+
 end = struct
   type ('a, 'b, 'c, 'd) t = 'a * 'b * 'c * 'd
 
@@ -354,10 +357,13 @@ end = struct
   let p2 (_, b, _, _) = b
   let p3 (_, _, c, _) = c
   let p4 (_, _, _, d) = d
-  let map f (a, b, c, d) = (f a, f b, f c, f d)
 
+  let map f (a, b, c, d) = (f a, f b, f c, f d)
   let equal (type o) ~(ord : o Ord.t) (a1, b1, c1, d1) (a2, b2, c2, d2) =
-    ord.equal a1 a2 && ord.equal b1 b2 && ord.equal c1 c2 && ord.equal d1 d2
+    ord.equal a1 a2
+    && ord.equal b1 b2
+    && ord.equal c1 c2
+    && ord.equal d1 d2
 
   let minimum (type o) ~(ord : o Ord.t) (a, b, c, d) =
     let acc = ord.min a b in
@@ -383,44 +389,37 @@ end = struct
     let acc = match ord.compare (f acc) (f d) with Gt | Eq -> acc | Lt -> d in
     acc
 
-  let first f (a, b, c, d) = (f a, b, c, d)
+
+  let first  f (a, b, c, d) = (f a, b, c, d)
   let second f (a, b, c, d) = (a, f b, c, d)
-  let third f (a, b, c, d) = (a, b, f c, d)
+  let third  f (a, b, c, d) = (a, b, f c, d)
   let fourth f (a, b, c, d) = (a, b, c, f d)
 end
 
 module T5 : sig
-  type ('a, 'b, 'c, 'd, 'e) t = ('a * 'b * 'c * 'd * 'e[@implements Eq.S])
+  type ('a, 'b, 'c, 'd, 'e) t = 'a * 'b * 'c * 'd * 'e [@implements Eq.S]
 
-  val p1 : ('a, _, _, _, _) t -> 'a
   (** Projecting each component from the tuple: *)
-
+  val p1 : ('a, _, _, _, _) t -> 'a
   val p2 : (_, 'b, _, _, _) t -> 'b
   val p3 : (_, _, 'c, _, _) t -> 'c
   val p4 : (_, _, _, 'd, _) t -> 'd
   val p5 : (_, _, _, _, 'e) t -> 'e
+
   val map : ('a -> 'b) -> ('a, 'a, 'a, 'a, 'a) t -> ('b, 'b, 'b, 'b, 'b) t
-
-  val equal :
-    ord:'a Ord.t -> ('a, 'a, 'a, 'a, 'a) t -> ('a, 'a, 'a, 'a, 'a) t -> bool
-
+  val equal : ord:'a Ord.t -> ('a, 'a, 'a, 'a, 'a) t -> ('a, 'a, 'a, 'a, 'a) t -> bool
   val minimum : ord:'a Ord.t -> ('a, 'a, 'a, 'a, 'a) t -> 'a
   val minimum_on : ord:'b Ord.t -> ('a -> 'b) -> ('a, 'a, 'a, 'a, 'a) t -> 'a
   val maximum : ord:'a Ord.t -> ('a, 'a, 'a, 'a, 'a) t -> 'a
   val maximum_on : ord:'b Ord.t -> ('a -> 'b) -> ('a, 'a, 'a, 'a, 'a) t -> 'a
 
-  val first : ('a1 -> 'a2) -> ('a1, 'b, 'c, 'd, 'e) t -> ('a2, 'b, 'c, 'd, 'e) t
   (** Functor instances on each of the components: *)
+  val first  : ('a1 -> 'a2) -> ('a1, 'b, 'c, 'd, 'e) t -> ('a2, 'b, 'c, 'd, 'e) t
+  val second : ('b1 -> 'b2) -> ('a, 'b1, 'c, 'd, 'e) t -> ('a, 'b2, 'c, 'd, 'e) t
+  val third  : ('c1 -> 'c2) -> ('a, 'b, 'c1, 'd, 'e) t -> ('a, 'b, 'c2, 'd, 'e) t
+  val fourth : ('d1 -> 'd2) -> ('a, 'b, 'c, 'd1, 'e) t -> ('a, 'b, 'c, 'd2, 'e) t
+  val fifth  : ('e1 -> 'e2) -> ('a, 'b, 'c, 'd, 'e1) t -> ('a, 'b, 'c, 'd, 'e2) t
 
-  val second :
-    ('b1 -> 'b2) -> ('a, 'b1, 'c, 'd, 'e) t -> ('a, 'b2, 'c, 'd, 'e) t
-
-  val third : ('c1 -> 'c2) -> ('a, 'b, 'c1, 'd, 'e) t -> ('a, 'b, 'c2, 'd, 'e) t
-
-  val fourth :
-    ('d1 -> 'd2) -> ('a, 'b, 'c, 'd1, 'e) t -> ('a, 'b, 'c, 'd2, 'e) t
-
-  val fifth : ('e1 -> 'e2) -> ('a, 'b, 'c, 'd, 'e1) t -> ('a, 'b, 'c, 'd, 'e2) t
 end = struct
   type ('a, 'b, 'c, 'd, 'e) t = 'a * 'b * 'c * 'd * 'e
 
@@ -429,10 +428,9 @@ end = struct
   let p3 (_, _, c, _, _) = c
   let p4 (_, _, _, d, _) = d
   let p5 (_, _, _, _, e) = e
-  let map f (a, b, c, d, e) = (f a, f b, f c, f d, f e)
 
-  let equal (type o) ~(ord : o Ord.t) (a1, b1, c1, d1, e1) (a2, b2, c2, d2, e2)
-      =
+  let map f (a, b, c, d, e) = (f a, f b, f c, f d, f e)
+  let equal (type o) ~(ord : o Ord.t) (a1, b1, c1, d1, e1) (a2, b2, c2, d2, e2) =
     ord.equal a1 a2
     && ord.equal b1 b2
     && ord.equal c1 c2
@@ -467,11 +465,11 @@ end = struct
     let acc = match ord.compare (f acc) (f e) with Gt | Eq -> acc | Lt -> e in
     acc
 
-  let first f (a, b, c, d, e) = (f a, b, c, d, e)
-  let second f (a, b, c, d, e) = (a, f b, c, d, e)
-  let third f (a, b, c, d, e) = (a, b, f c, d, e)
-  let fourth f (a, b, c, d, e) = (a, b, c, f d, e)
-  let fifth f (a, b, c, d, e) = (a, b, c, d, f e)
-end
 
+  let first  f (a, b, c, d, e) = (f a, b, c, d, e)
+  let second f (a, b, c, d, e) = (a, f b, c, d, e)
+  let third  f (a, b, c, d, e) = (a, b, f c, d, e)
+  let fourth f (a, b, c, d, e) = (a, b, c, f d, e)
+  let fifth  f (a, b, c, d, e) = (a, b, c, d, f e)
+end
 (*$*)

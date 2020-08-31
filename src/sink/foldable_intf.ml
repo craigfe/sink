@@ -1,4 +1,4 @@
-open Import
+open Sink_kernel
 
 module type Fold_left = sig
   type ('a, 'p) t
@@ -57,10 +57,20 @@ module type General = sig
 
   val fold_right : ('a elt -> 'acc -> 'acc) -> ('a, _) t -> 'acc -> 'acc
   val iter : ('a elt -> unit) -> ('a, _) t -> unit
+
   val is_empty : ('a, _) t -> bool
+  (** [is_empty t] is true iff [t] contains no elements. *)
+
   val length : ('a, _) t -> int
+  (** [length t] is the number of elements contained in [t]. *)
+
   val exists : ('a elt -> bool) -> ('a, _) t -> bool
+  (** [exists p t] is true iff at least one of the elements of [t] satisfies
+      [p]. *)
+
   val for_all : ('a elt -> bool) -> ('a, _) t -> bool
+  (** [for_all p t] returns true iff all of the elements of [t] satisfy [p]. *)
+
   val to_list : ('a, _) t -> 'a elt list
   val mem : 'a elt Eq.t -> 'a elt -> ('a, _) t -> bool
   val minimum : 'o elt Ord.t -> ('o, _) t -> 'o elt option

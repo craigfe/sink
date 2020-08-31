@@ -1,5 +1,3 @@
-open Import
-
 type t = | [@@implements Enum.S, Typeable.S, Higher.BRANDED]
 
 val absurd : t -> _

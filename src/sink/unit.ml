@@ -1,5 +1,3 @@
-open Import
-
 type t = unit [@@deriving branded]
 
 let t = Repr.unit

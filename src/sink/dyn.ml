@@ -1,4 +1,4 @@
-open Import
+open Sink_kernel
 include Dyn_intf
 
 type t = dyn

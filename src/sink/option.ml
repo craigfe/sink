@@ -1,4 +1,3 @@
-open Import
 module O = Stdlib.Option
 
 type 'a t = 'a option [@@deriving branded]
@@ -10,6 +9,7 @@ let some v = Some v
 
 let get = function Some v -> v | None -> invalid_arg "get: option is None"
 let bind o f = match o with None -> None | Some v -> f v
+let flat_map f o = bind o f
 let join = function Some o -> o | None -> None
 let map f o = match o with None -> None | Some v -> Some (f v)
 

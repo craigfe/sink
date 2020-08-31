@@ -1,4 +1,4 @@
-open Import
+open Sink_kernel
 include Foldable_intf
 
 module Of_left_assoc (X : Left_assoc) :
@@ -53,7 +53,7 @@ module Of_left_assoc (X : Left_assoc) :
     | Right () -> true
 
   let exists p = existsi (fun _ -> p)
-  let to_list t = fold_left (fun acc e -> e :: acc) [] t |> List.rev
+  let to_list t = fold_left (fun acc e -> e :: acc) [] t |> Stdlib.List.rev
 end
 
 module Of_indexable (X : Indexable.General) = struct

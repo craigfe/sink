@@ -1,4 +1,3 @@
-open Import
 module A = Stdlib.Array
 
 module T = struct

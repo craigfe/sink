@@ -1,4 +1,3 @@
-open Import
 module C = Stdlib.Char
 module S = Stdlib.String
 

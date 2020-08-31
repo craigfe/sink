@@ -1,4 +1,4 @@
-open Import
+open Sink_kernel
 
 type 'a t [@@implements Eq.S, Show.S, Higher.BRANDED]
 

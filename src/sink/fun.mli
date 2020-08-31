@@ -1,5 +1,3 @@
-open Import
-
 type ('a, 'b) t = 'a -> 'b [@@implements Higher.BRANDED]
 
 val id : 'a -> 'a

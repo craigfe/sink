@@ -1,5 +1,3 @@
-open Import
-
 type t = bytes [@@implements Monoid.S, Eq.S, Ord.S, Blit.S, Show.S]
 
 include Foldable.S with type t := t and type elt := char

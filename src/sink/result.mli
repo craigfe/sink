@@ -1,5 +1,3 @@
-open Import
-
 type ('a, 'e) t = ('a, 'e) result
 [@@implements Functor.S, Monad.S, Higher.BRANDED]
 

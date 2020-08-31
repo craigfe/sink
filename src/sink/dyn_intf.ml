@@ -1,4 +1,4 @@
-open Import
+open Sink_kernel
 
 type dyn =
   | Opaque

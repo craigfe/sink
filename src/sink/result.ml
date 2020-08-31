@@ -1,11 +1,10 @@
-open Import
-
 type ('a, 'e) t = ('a, 'e) result = Ok of 'a | Error of 'e
 [@@deriving branded]
 
 let map f = function Ok o -> Ok (f o) | Error _ as e -> e
 let return x = Ok x
 let bind x f = match x with Ok o -> f o | Error _ as e -> e
+let flat_map f x = bind x f
 let join = function Error _ as e -> e | Ok x -> x
 let kliesli f g x = bind (f x) g
 let errorf fmt = Format.kasprintf (fun msg -> Error (`Msg msg)) fmt

@@ -1,4 +1,4 @@
-open Import
+open Sink_kernel
 
 type nonrec +'a node = 'a Stdlib.Seq.node = Nil | Cons of 'a * 'a Stdlib.Seq.t
 type nonrec +'a t = 'a Stdlib.Seq.t [@@deriving branded]
@@ -24,8 +24,8 @@ let equal (type e) (eq : e Eq.t) xs ys =
 let rec map f xs () =
   match xs () with Nil -> Nil | Cons (x, xf) -> Cons (f x, map f xf)
 
-module Monad_instance = struct
-  type nonrec 'a t = 'a t
+module Monad_instance = Monad.Of_minimal (struct
+  type nonrec ('a, 'p) t = 'a t
 
   let return x () = Cons (x, empty)
 
@@ -39,10 +39,7 @@ module Monad_instance = struct
     match seq () with
     | Nil -> bind tail f ()
     | Cons (x, next) -> Cons (x, flat_map_app f next tail)
-
-  let kliesli f g x = bind (f x) g
-  let join t = Stdlib.Seq.flat_map Fun.id t
-end
+end)
 
 include (Monad_instance : Monad.S1 with type 'a t := 'a t)
 include Applicative.Of_monad (Monad_instance)

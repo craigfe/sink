@@ -1,4 +1,3 @@
-open Import
 module I = Stdlib.Int
 
 type t = int [@@deriving branded]

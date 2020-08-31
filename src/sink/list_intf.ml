@@ -1,5 +1,3 @@
-open Import
-
 module type List = sig
   type index = int
 

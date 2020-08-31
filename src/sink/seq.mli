@@ -1,5 +1,3 @@
-open Import
-
 type nonrec 'a node = 'a Stdlib.Seq.node = Nil | Cons of 'a * 'a Stdlib.Seq.t
 
 type nonrec 'a t = 'a Stdlib.Seq.t

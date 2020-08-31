@@ -1,5 +1,3 @@
-open Import
-
 type t = string
 [@@implements
   Monoid.S,

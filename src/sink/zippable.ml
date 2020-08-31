@@ -1,4 +1,4 @@
-open Import
+open Sink_kernel
 
 module type General = sig
   type 'a t

@@ -1,5 +1,3 @@
-open Import
-
 type t = unit
 [@@implements Bounded.S, Show.S, Eq.S, Ord.S, Typeable.S, Higher.BRANDED]
 

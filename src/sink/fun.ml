@@ -1,5 +1,3 @@
-open Import
-
 type ('a, 'b) t = 'a -> 'b [@@deriving branded]
 
 external id : 'a -> 'a = "%identity"

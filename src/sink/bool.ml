@@ -1,4 +1,3 @@
-open Import
 module B = Stdlib.Bool
 
 type t = bool [@@deriving branded]

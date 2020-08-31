@@ -1,4 +1,4 @@
-open Import
+open Sink_kernel
 module L = Stdlib.List
 
 module T = struct
@@ -28,6 +28,7 @@ module T = struct
   let init = L.init
   let return x = [ x ]
   let bind l f = L.map f l |> L.flatten
+  let flat_map f t = bind t f
   let kliesli f g x = bind (f x) g
   let join = L.flatten
   let pure x = [ x ]

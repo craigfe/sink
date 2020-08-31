@@ -1,5 +1,3 @@
-open Import
-
 type t = int
 [@@implements
   Show.S, Eq.S, Ord.S, Num.S, Bounded.S, Higher.BRANDED, Dyn.S, Typeable.S]

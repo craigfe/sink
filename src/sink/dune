@@ -3,8 +3,8 @@
  (public_name sink)
  (preprocess
   (pps ppx_deriving_typeclass ppx_brands.deriver ppx_brands.rewriter
-    ppx_implements))
- (libraries sink.kernel sink.typeclasses))
+    ppx_implements ppx_deriving_phantom ppx_deriving_infix))
+ (libraries sink.kernel))
 
 (cinaps
  (files tuple.ml))

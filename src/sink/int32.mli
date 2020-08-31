@@ -1,5 +1,3 @@
-open Import
-
 type t = int32 [@@implements Show.S, Num.S, Higher.BRANDED]
 
 module Infix : sig
