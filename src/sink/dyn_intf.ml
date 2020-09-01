@@ -18,6 +18,7 @@ module type Dyn = sig
   type t [@@implements Hashable.S]
 
   module Encode : Repr.S with type 'a t = 'a -> t
+
   (* module Decode : Repr.S with type 'a t = dyn -> 'a *)
 
   (* module Infer : Repr.S with type 'a t = dyn -> 'a Repr.t *)

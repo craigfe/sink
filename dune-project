@@ -73,3 +73,10 @@
  (documentation https://CraigFe.github.io/sink/)
  (depends
   (ppxlib (>= 0.14.0))))
+
+(package
+ (name ppx_alcotest)
+ (synopsis "Auto-derive Alcotest test construction boilerplate")
+ (documentation https://CraigFe.github.io/sink/)
+ (depends
+  (ppxlib (>= 0.14.0))))

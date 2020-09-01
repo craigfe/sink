@@ -1,4 +1,6 @@
 (test
  (name main)
  (package sink)
- (libraries sink alcotest))
+ (libraries sink alcotest)
+ (preprocess
+  (pps ppx_alcotest)))

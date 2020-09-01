@@ -15,7 +15,7 @@ module Fun = Fun
 module Either = Either
 module Option = Option
 module Result = Result
-module Ordering = Sink_typeclasses.Ordering
+module Ordering = Ordering
 module Empty = Empty
 module Char = Char
 module String = String
@@ -42,7 +42,7 @@ module Set = Set
 
 (** {2 Association containers} *)
 
-module Assoc = Sink_typeclasses.Assoc
+module Assoc = Assoc
 module Hashtbl = Hashtbl
 module Map = Map
 

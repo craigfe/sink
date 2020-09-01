@@ -2,6 +2,7 @@ open Sink_kernel
 open Dyn_intf
 
 type t = dyn
+
 module type S = S with type dyn := t
 module type S1 = S1 with type dyn := t
 
