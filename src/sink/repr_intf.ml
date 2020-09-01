@@ -11,17 +11,17 @@ module type S = sig
   val string : string t
   val bytes : bytes t
 
-  val int : int t
   (** Numeric types: *)
 
+  val int : int t
   val nativeint : nativeint t
   val int32 : int32 t
   val int64 : int64 t
   val float : float t
 
-  val pair : 'a t -> 'b t -> ('a * 'b) t
   (** Container types: *)
 
+  val pair : 'a t -> 'b t -> ('a * 'b) t
   val triple : 'a t -> 'b t -> 'c t -> ('a * 'b * 'c) t
   val option : 'a t -> 'a option t
   val either : 'a t -> 'b t -> ('a, 'b) either t

@@ -90,9 +90,11 @@ let () =
       let loc = match loc with Some l -> l | None -> Location.none in
       ( [ [%stri let __ppx_alcotest_suite = []] ],
         [
-          [%stri let () = Alcotest.run __FILE__ (Stdlib.List.rev __ppx_alcotest_suite)];
+          [%stri
+            let () =
+              Alcotest.run __FILE__ (Stdlib.List.rev __ppx_alcotest_suite)];
         ] ))
-    "alcotest.test";
+    "alcotest.test"
 
 (*   let () =
  *     let rule =

@@ -17,9 +17,9 @@
 <details>
 <summary>Vague design principles: (click to unfold)</summary>
 
-- **Consistent interfaces**. Very similar to the approach taken in Jane
-  Street's [Base][js-base], type interfaces are constructed using a combination
-  of functors and PPX to ensure consistency.
+- **Consistent interfaces**. Very similar to the approach taken in Jane Street's
+  [Base][js-base], type interfaces are built with heavy use of functors and
+  destructive substitution.
 
 - **Higher-kinded polymorphism via [brands][yallop14]**. All higher-kinded types
   `'a t` come alongside a corresponding _brand_ `br` that can be used to
@@ -36,9 +36,9 @@
   by supplying a new interpreter for the DSL.
 
 - **Function-level programming permitted**. Use of point-free style in OCaml
-  code has been somewhat contentious, but I find it useful occasionally.
-  Function composition is provided as `( >> )`, function-level monadic
-  composition as `( >=> )` etc.
+  code is contentious, but I find it useful. Function composition is provided as
+  `( >> )`, function-level monadic composition as `( >=> )` etc.
+
 - **Name-spaced operators**. Some modules provide `Infix` and `Syntax`
   submodules that are intended to be opened either locally or globally. For
   instance, there are many ways to get at the `bind` operation on lists:
@@ -48,18 +48,10 @@
 | Value-level    |  `bind`   |  `( >>= )`   |  `( let* )`   |
 | Function-level | `kliesli` |  `( >=> )`   |       —       |
 
-- **Different datastructure views belong in different namespaces**. For
-  instance, viewing an `'a array array` as a _matrix_ (or `('k * 'v) list` as an
-  association list) belongs in a different namespace from the main datastructure
-  (e.g. `Array.Matrix` or `List.Assoc` respecitvely).
-
-- **Dependencies à la carte**. OCaml library developers have limited solutions
-  for isolating their users from library dependency choices. (At time of
-  writing, my system contains 38 Opam switches with transitive dependencies on
-  [`Base`][js-base].) For lack of a better solution, Sink is intended to be
-  vendored, taking advantage of Dune's excellent composability. In Mirage style,
-  extra dependencies such as [`Lwt`][lwt], [`Alcotest`][alcotest], and
-  [`Pp`][pp] can be opted into explicitly.
+- **Different datastructure views in different namespaces**. For instance, views
+  of an `'a array array` as a _matrix_ or a `('k * 'v) list` as an _association
+  list_ are kept in separate namespaces (`Array.Matrix` and `List.Assoc`
+  respecitvely).
 
 <hr/>
 
