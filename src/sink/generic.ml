@@ -43,13 +43,13 @@ module Pp = struct
   let pair, list, array = Fmt.Dump.(pair, list, array)
 end
 
+let pp_interp = Repr.make (module Pp)
+
 let pp : type a. a Repr.t -> Format.formatter -> a -> unit =
-  let pp = Repr.make (module Pp) in
-  fun t -> Pp.prj (pp.generic t)
+ fun t -> Pp.prj (pp_interp.generic t)
 
 let to_string : type a. a Repr.t -> a -> string =
-  let pp = Repr.make (module Pp) in
-  fun t -> Fmt.to_to_string (Pp.prj (pp.generic t))
+ fun t -> Fmt.to_to_string (Pp.prj (pp_interp.generic t))
 
 module Equal = struct
   type 'a t = 'a -> 'a -> bool [@@deriving branded]
@@ -99,6 +99,7 @@ module Equal = struct
     inner 0
 end
 
+let equal_interp = Repr.make (module Equal)
+
 let equal : type a. a Repr.t -> a -> a -> bool =
-  let equal = Repr.make (module Equal) in
-  fun t -> Equal.prj (equal.generic t)
+ fun t -> Equal.prj (equal_interp.generic t)

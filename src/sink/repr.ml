@@ -185,8 +185,9 @@ module Pp = struct
 end
 
 let pp_interp = make (module Pp)
+
 let pp : type a. Format.formatter -> a t -> unit =
-  fun ppf t -> Pp.prj (pp_interp.generic t) ppf
+ fun ppf t -> Pp.prj (pp_interp.generic t) ppf
 
 let to_string : type a. a t -> string =
-  fun t -> Fmt.to_to_string (fun ppf () -> Pp.prj (pp_interp.generic t) ppf) ()
+ fun t -> Fmt.to_to_string (fun ppf () -> Pp.prj (pp_interp.generic t) ppf) ()
