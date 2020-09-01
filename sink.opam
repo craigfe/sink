@@ -9,6 +9,7 @@ doc: "https://CraigFe.github.io/sink/"
 bug-reports: "https://github.com/CraigFe/sink/issues"
 depends: [
   "dune" {>= "2.5"}
+  "ocaml" {>= "4.08.0"}
   "ppx_brands" {= version}
   "ppx_deriving_typeclass" {= version}
   "ppx_deriving_phantom" {= version}

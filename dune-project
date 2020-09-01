@@ -14,6 +14,7 @@
  (description "An OCaml standard library replacement for personal use.")
  (documentation https://CraigFe.github.io/sink/)
  (depends
+  (ocaml (>= 4.08.0))
   (ppx_brands (= :version))
   (ppx_deriving_typeclass (= :version))
   (ppx_deriving_phantom (= :version))
