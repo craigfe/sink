@@ -184,10 +184,9 @@ module Pp = struct
   let either a b ppf = Fmt.pf ppf "(%t, %t) either" a b
 end
 
+let pp_interp = make (module Pp)
 let pp : type a. Format.formatter -> a t -> unit =
-  let pp = make (module Pp) in
-  fun ppf t -> Pp.prj (pp.generic t) ppf
+  fun ppf t -> Pp.prj (pp_interp.generic t) ppf
 
 let to_string : type a. a t -> string =
-  let pp = make (module Pp) in
-  fun t -> Fmt.to_to_string (fun ppf () -> Pp.prj (pp.generic t) ppf) ()
+  fun t -> Fmt.to_to_string (fun ppf () -> Pp.prj (pp_interp.generic t) ppf) ()
