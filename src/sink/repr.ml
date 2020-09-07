@@ -1,5 +1,4 @@
 include Repr_intf
-open Sink_kernel
 open! Import
 
 class type ['repr] sym =

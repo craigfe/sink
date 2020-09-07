@@ -6,7 +6,10 @@ module T = struct
   type 'a elt = 'a
   type index = int
 
+  let hd = function [] -> None | x :: _ -> Some x
   let hd_exn = L.hd
+  let tl = function [] -> None | _ :: xs -> Some xs
+  let tl_exn = L.tl
   let nth = L.nth_opt
   let nth_exn = L.nth
   let t = Repr.list
@@ -171,4 +174,6 @@ end)
 
 include T
 
+let sort ord = Stdlib.List.sort (Ord.to_int_compare ord)
+let get = Stdlib.List.nth
 let of_array = Stdlib.Array.to_list

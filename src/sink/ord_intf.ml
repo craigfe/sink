@@ -36,6 +36,7 @@ module type Ord = sig
   module type INFIX = INFIX
 
   val poly : 'a Proxy.t -> 'a t
+  val to_int_compare : 'a t -> 'a -> 'a -> int
 
   module Of_stdlib_compare (X : sig
     type t

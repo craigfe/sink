@@ -6,6 +6,20 @@ module type General = sig
   val get : 'a t -> int -> 'a elt
 end
 
+module type Functional = sig
+  include General
+  (** @inline *)
+
+  val sort : 'a elt Ord.t -> 'a t -> 'a t
+end
+
+module type Mutable = sig
+  include General
+  (** @inline *)
+
+  val sort : 'a elt Ord.t -> 'a t -> unit
+end
+
 module type S = sig
   type t
   type elt
@@ -14,9 +28,12 @@ module type S = sig
   include General with type _ t := t and type _ elt := elt
 end
 
-module type S1 = sig
-  type 'a t
-
+module type Functional1 = sig
+  include Functional with type 'a elt := 'a
   (** @inline *)
-  include General with type 'a t := 'a t and type 'a elt := 'a
+end
+
+module type Mutable1 = sig
+  include Mutable with type 'a elt := 'a
+  (** @inline *)
 end

@@ -7,7 +7,7 @@ module type Minimal = sig
   val bind : ('a, 'p) t -> ('a -> ('b, 'p) t) -> ('b, 'p) t
 end
 
-module type Generic = sig
+module type General = sig
   type (+'a, 'p) t
 
   val return : 'a -> ('a, 'p) t
@@ -24,14 +24,14 @@ end
 module type S1 = sig
   type +'a t
 
-  include Generic with type ('a, _) t := 'a t
+  include General with type ('a, _) t := 'a t
   (** @inline *)
 end
 
 module type S2 = sig
   type (+'a, 'p) t
 
-  include Generic with type ('a, 'p) t := ('a, 'p) t
+  include General with type ('a, 'p) t := ('a, 'p) t
   (** @inline *)
 end
 
@@ -69,7 +69,7 @@ end
 module type Reader_open = sig
   type (+'a, +'e) t
 
-  include Generic with type ('a, 'e) t := ('a, 'e) t
+  include General with type ('a, 'e) t := ('a, 'e) t
 
   val run : ('a, 'e) t -> 'e -> 'a
   val ask : ('e, 'e) t
@@ -103,7 +103,7 @@ end
 module type Writer_open = sig
   type (+'a, -'w) t
 
-  include Generic with type ('a, 'w) t := ('a, 'w) t
+  include General with type ('a, 'w) t := ('a, 'w) t
 
   val tell : 'w -> (unit, 'w) t
   val listen : ('a, 'w) t -> ('a, 'w) t
@@ -131,13 +131,13 @@ module type Monad = sig
   type nonrec 'a t = 'a t
 
   module type Minimal = Minimal
-  module type Generic = Generic
+  module type General = General
   module type S1 = S1
   module type S2 = S2
   module type INFIX1 = INFIX
   module type Syntax = Syntax
 
-  module Of_minimal (X : Minimal) : Generic with type ('a, 'p) t = ('a, 'p) X.t
+  module Of_minimal (X : Minimal) : General with type ('a, 'p) t = ('a, 'p) X.t
 
   (** {1 Standard monad instances} *)
 

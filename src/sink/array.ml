@@ -32,6 +32,7 @@ let of_list = A.of_list
 let to_array t = t
 let zip _ = failwith "TODO"
 let unzip _ = failwith "TODO"
+let sort ord = Stdlib.Array.sort (Ord.to_int_compare ord)
 
 module Matrix = struct
   type nonrec 'a t = 'a t t

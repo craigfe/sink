@@ -13,11 +13,15 @@ module type List = sig
       Functor.Indexed { subst = (index, int) },
       Applicative.S,
       Monad.S,
+      Indexable.Functional,
       Typeable.S,
       Branded.S,
       Dyn.S]
 
+  val hd : 'a t -> 'a option
   val hd_exn : 'a t -> 'a
+  val tl : 'a t -> 'a t option
+  val tl_exn : 'a t -> 'a t
   val nth : 'a t -> int -> 'a option
   val nth_exn : 'a t -> int -> 'a
   val init : int -> (int -> 'a) -> 'a t

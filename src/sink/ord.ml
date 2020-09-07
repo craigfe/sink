@@ -1,5 +1,11 @@
 include Ord_intf
 
+let to_int_compare ord a b =
+  match ord.compare a b with
+  | Ordering.Lt -> -1
+  | Ordering.Eq -> 0
+  | Ordering.Gt -> 1
+
 let of_int_compare compare a b =
   match compare a b with
   | n when n < 0 -> Ordering.Lt
