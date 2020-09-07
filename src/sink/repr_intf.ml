@@ -1,8 +1,8 @@
-open Higher
+open! Import
 open Sink_kernel
 
 module type S = sig
-  type 'a t [@@implements Higher.BRANDED]
+  type 'a t [@@implements Branded.S]
 
   val empty : empty t
   val unit : unit t

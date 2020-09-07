@@ -1,3 +1,5 @@
+open! Import
+
 module type Minimal = sig
   type (+'a, 'p) t
 

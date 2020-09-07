@@ -1,5 +1,6 @@
-type 'a t = 'a lazy_t
-[@@implements Functor.S, Monad.S, Typeable.S, Higher.BRANDED]
+open! Import
+
+type 'a t = 'a lazy_t [@@implements Functor.S, Monad.S, Typeable.S, Branded.S]
 
 external force : 'a t -> 'a = "%lazy_force"
 val force_val : 'a t -> 'a

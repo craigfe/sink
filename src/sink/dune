@@ -4,7 +4,7 @@
  (preprocess
   (pps ppx_deriving_typeclass ppx_brands.deriver ppx_brands.rewriter
     ppx_implements ppx_deriving_phantom ppx_deriving_infix))
- (libraries fmt))
+ (libraries brands fmt))
 
 ;; TODO: drop Fmt dependency
 

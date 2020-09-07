@@ -1,4 +1,6 @@
-type ('a, 'b) t = 'a -> 'b [@@implements Higher.BRANDED]
+open! Import
+
+type ('a, 'b) t = 'a -> 'b [@@implements Branded.S]
 
 val id : 'a -> 'a
 val const : 'a -> _ -> 'a

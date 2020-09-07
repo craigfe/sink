@@ -1,6 +1,8 @@
+open! Import
+
 type t = int
 [@@implements
-  Show.S, Eq.S, Ord.S, Num.S, Bounded.S, Higher.BRANDED, Dyn.S, Typeable.S]
+  Show.S, Eq.S, Ord.S, Num.S, Bounded.S, Branded.S, Dyn.S, Typeable.S]
 
 val eq : int Eq.t
 val ord : int Ord.t

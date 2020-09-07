@@ -1,6 +1,6 @@
 include Repr_intf
 open Sink_kernel
-open Higher
+open! Import
 
 class type ['repr] sym =
   object

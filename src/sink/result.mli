@@ -1,5 +1,6 @@
-type ('a, 'e) t = ('a, 'e) result
-[@@implements Functor.S, Monad.S, Higher.BRANDED]
+open! Import
+
+type ('a, 'e) t = ('a, 'e) result [@@implements Functor.S, Monad.S, Branded.S]
 
 val errorf :
   ('a, Format.formatter, unit, ('b, [> `Msg of string ]) t) format4 -> 'a

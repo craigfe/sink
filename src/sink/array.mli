@@ -1,13 +1,15 @@
+open! Import
+
 type 'a t = 'a array
 [@@implements
   Semigroup.S,
     Functor.S,
-    Indexable.S,
+    Indexable.Mutable,
     Foldable.S,
     Zippable.S,
     Blit.S,
     Typeable.S,
-    Higher.BRANDED,
+    Branded.S,
     Dyn.S]
 
 val set : 'a t -> int -> 'a -> unit

@@ -4,7 +4,7 @@ module type S = sig
   val derive_typeclass : module_type_declaration -> structure
 end
 
-let higher x = Ldot (lident "Higher", x)
+let higher x = Ldot (lident "Brands", x)
 
 module Located (A : Ast_builder.S) : S = struct
   open A

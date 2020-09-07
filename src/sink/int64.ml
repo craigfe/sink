@@ -1,3 +1,4 @@
+open! Import
 module I = Stdlib.Int64
 
 type t = int64 [@@deriving branded]

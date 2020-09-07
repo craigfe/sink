@@ -33,3 +33,7 @@ build: [
   ]
 ]
 dev-repo: "git+https://github.com/CraigFe/sink.git"
+pin-depends: [
+  "brands" "git+https://github.com/CraigFe/brands#23f348f0d7f9b6fc6e2ee5c2cec6065d7e909207"
+  "ppx_brands" "git+https://github.com/CraigFe/brands#23f348f0d7f9b6fc6e2ee5c2cec6065d7e909207"
+]

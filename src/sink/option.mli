@@ -1,5 +1,7 @@
+open! Import
+
 type 'a t = 'a option
-[@@implements Eq.S, Ord.S, Functor.S, Applicative.S, Monad.S, Higher.BRANDED]
+[@@implements Eq.S, Ord.S, Functor.S, Applicative.S, Monad.S, Branded.S]
 
 val none : _ t
 

@@ -1,3 +1,4 @@
+open! Import
 module B = Stdlib.Bytes
 
 module T = struct

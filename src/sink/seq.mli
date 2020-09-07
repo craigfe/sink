@@ -1,3 +1,5 @@
+open! Import
+
 type nonrec 'a node = 'a Stdlib.Seq.node = Nil | Cons of 'a * 'a Stdlib.Seq.t
 
 type nonrec 'a t = 'a Stdlib.Seq.t
@@ -9,7 +11,7 @@ type nonrec 'a t = 'a Stdlib.Seq.t
     Monad.S,
     Foldable.S,
     Typeable.S,
-    Higher.BRANDED]
+    Branded.S]
 
 val empty : unit -> 'a node
 val cons : 'a -> 'a t -> unit -> 'a node

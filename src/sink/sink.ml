@@ -97,7 +97,6 @@ module Proxy = Proxy
 
 (** {1 Higher-kinded polymorphism} *)
 
-module Higher = Higher
 module Reifier = Reifier
 
 (** {1 Generic programming} *)

@@ -1,1 +1,3 @@
-type 'a t = 'a ref [@@implements Higher.BRANDED]
+open! Import
+
+type 'a t = 'a ref [@@implements Branded.S]

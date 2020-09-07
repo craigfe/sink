@@ -1,3 +1,5 @@
+open! Import
+
 module type List = sig
   type index = int
 
@@ -12,7 +14,7 @@ module type List = sig
       Applicative.S,
       Monad.S,
       Typeable.S,
-      Higher.BRANDED,
+      Branded.S,
       Dyn.S]
 
   val hd_exn : 'a t -> 'a

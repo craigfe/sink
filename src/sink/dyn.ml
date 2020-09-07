@@ -1,4 +1,4 @@
-open Sink_kernel
+open! Import
 open Dyn_intf
 
 type t = dyn
